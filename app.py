@@ -86,7 +86,7 @@ def quick_create_explore():
             <div class="card-body p-0 alignment-placeholder bg-silver"></div>
             <div class="card-body p-2 bg-silver">
 
-              <h6 class="card-title">{df_category['name'][x]}</h5>
+              <h6 class="card-title">{df_category['name'][x]}</h6>
                 <p class="card-text text-truncate">{df_category['desc'][x]}
                 </p>
                 <a href="/view/{df_category['id'][x]}" class="btn btn-primary mt-auto">Learn more</a>
@@ -123,7 +123,7 @@ def quick_create_explore():
   <script src="https://code.jquery.com/jquery-3.5.1.min.js"
     integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
   <script src="static/scripts/explore-script.js"></script>
-</body
+</body>
 
 </html>
 """

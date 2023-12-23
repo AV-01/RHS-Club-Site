@@ -1,0 +1,46 @@
+html {
+  height: 100%;
+  width: 100%;
+}
+
+table,
+th,
+td {
+  border: 1px solid;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th,
+td {
+  padding: 15px;
+  text-align: left;
+}
+
+td {
+  width: 10%;
+}
+
+tr:nth-child(1) {
+  background-color: cadetblue;
+}
+
+tr:hover {
+  background-color: cornflowerblue;
+  myFunction()
+}
+
+tr:not(:first-child) {
+  background-color: silver;
+}
+
+tr:hover {
+  background-color: cornflowerblue;
+}
+
+.bg-silver {
+  background-color: silver;
+}
