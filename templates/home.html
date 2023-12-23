@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <title>RHS Clubs</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
+    <link href="static/css/style.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+
+<!-- This is all the Navbar stuff: -->
+<nav class="navbar navbar-expand-lg bg-body-tertiary">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="#">RHS Clubs</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="home">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="explore">Explore</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Calendar</a>
+                </li>
+            </ul>
+            <form class="d-flex" role="search">
+                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                <button class="btn btn-outline-success" type="submit">Search</button>
+            </form>
+        </div>
+    </div>
+</nav>
+<!-- All the main part of the body -->
+
+<div class="page-header header container-fluid h-75">
+    <div class="row row-cols-xs-1 row-cols-sm-1 row-cols-md-2 row-cols-lg-2 row-cols-xl-2">
+        <div class="col-sm text-center align-items-center ml-5" style="margin:auto;">
+            <h1 class="mt-4 ml-4 text-center">Clubs at Rocklin High School</h1>
+            <a class="mt-4 ml-4 btn btn-lg rounded-pill text-white bg-primary" href="/explore">
+                See All Clubs <i class="bi bi-arrow-right"></i>
+            </a>
+        </div>
+        <div class="col-sm">
+            <!-- Carousel -->
+            <div id="demo" class="carousel slide" data-bs-ride="carousel">
+
+                <!-- Indicators/dots -->
+                <div class="carousel-indicators">
+                    <button type="button" data-bs-target="#demo" data-bs-slide-to="0" class="active"></button>
+                    <button type="button" data-bs-target="#demo" data-bs-slide-to="1"></button>
+                    <button type="button" data-bs-target="#demo" data-bs-slide-to="2"></button>
+                </div>
+
+                <!-- The slideshow/carousel -->
+                <div class="carousel-inner">
+                    <div class="carousel-item active">
+                        <img
+                                src="https://media.discordapp.net/attachments/1053144915477012641/1183995135831330816/club-rush-photo-900x600.png?ex=658a5c65&is=6577e765&hm=e5e420d6d7b66c804f02a07d0048affa6feb38991f281567715e8046c0d34640&=&format=webp&quality=lossless&width=713&height=475"
+                                alt="Los Angeles" class="d-block w-100">
+                    </div>
+                    <div class="carousel-item">
+                        <img
+                                src="https://media.discordapp.net/attachments/1053144915477012641/1183994981170552832/image.png?ex=658a5c41&is=6577e741&hm=a23bd37b8d487e9b1e54109cb3077f9bb49b0cba88717716d27170982b53191c&=&format=webp&quality=lossless"
+                                alt="Chicago" class="d-block w-100">
+                    </div>
+                    <div class="carousel-item">
+                        <img
+                                src="https://media.discordapp.net/attachments/1053144915477012641/1183995135831330816/club-rush-photo-900x600.png?ex=658a5c65&is=6577e765&hm=e5e420d6d7b66c804f02a07d0048affa6feb38991f281567715e8046c0d34640&=&format=webp&quality=lossless&width=713&height=475"
+                                alt="New York" class="d-block w-100">
+                    </div>
+                </div>
+
+                <!-- Left and right controls/icons -->
+                <button class="carousel-control-prev" type="button" data-bs-target="#demo" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon"></span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#demo" data-bs-slide="next">
+                    <span class="carousel-control-next-icon"></span>
+                </button>
+            </div>
+            <!--        https://media.discordapp.net/attachments/1053144915477012641/1183995135831330816/club-rush-photo-900x600.png?ex=658a5c65&is=6577e765&hm=e5e420d6d7b66c804f02a07d0048affa6feb38991f281567715e8046c0d34640&=&format=webp&quality=lossless&width=713&height=475-->
+            <!-- <img
+              src="https://media.discordapp.net/attachments/1053144915477012641/1183995135831330816/club-rush-photo-900x600.png?ex=658a5c65&is=6577e765&hm=e5e420d6d7b66c804f02a07d0048affa6feb38991f281567715e8046c0d34640&=&format=webp&quality=lossless&width=713&height=475"
+              class="img-fluid mt-4" alt="Responsive image"> -->
+        </div>
+    </div>
+</div>
+
+
+<!-- <div class="border-top" style="height: 10px;"></div> -->
+
+<div class="container mt-5">
+    <footer class="d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top">
+        <p class="col-md-4 mb-0 text-muted">Questions? Email <b>aryavratmishra007@gmail.com</b></p>
+
+        <ul class="nav col-md-4 justify-content-end">
+            <li class="nav-item"><a href="/" class="nav-link px-2 text-muted">Home</a></li>
+            <li class="nav-item"><a href="/explore" class="nav-link px-2 text-muted">Explore</a></li>
+            <li class="nav-item"><a href="/calendar" class="nav-link px-2 text-muted">Calendar</a></li>
+            <li class="nav-item">
+                <p class="nav-link px-2 text-decoration-none opacity-75">Credit: Aryavrat M</p>
+            </li>
+        </ul>
+    </footer>
+</div>
+<!--  <script src="https://code.jquery.com/jquery-3.5.1.min.js"-->
+<!--    integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>-->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script src="static/scripts/script.js"></script>
+<script src="https://replit.com/public/js/replit-badge-v2.js" theme="dark" position="bottom-right"></script>
+</body>
+
+</html>
