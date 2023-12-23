@@ -133,7 +133,7 @@ def quick_create_explore():
 
 def view_website(club_id):
     real_path = f"static/data/{club_id}"
-    Func = open(f"templates/{club_id}.html", "w")
+    Func = open(f"templates/{club_id}-view.html", "w")
     all_data = []
     with open(f"{real_path}/{club_id}.csv", 'r') as file:
         csvreader = csv.reader(file, delimiter=',')
@@ -336,7 +336,7 @@ def explore():  # Run the function
 @app.route('/view/<club>')  # /landingpage/A
 def landing_page(club):
     view_website(club)
-    return render_template(f'{club}.html', club=club)
+    return render_template(f'{club}-view.html', club=club)
 
 
 app.run(host='0.0.0.0', port=5000,
