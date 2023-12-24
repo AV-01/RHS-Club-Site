@@ -1,12 +1,12 @@
 import csv
 
-club_id = "Bird-Club"
-real_path = f"static/data/{club_id}"
-Func = open(f"templates/{club_id}.html", "w")
-all_data = []
-with open(f"{real_path}/{club_id}.csv", 'r') as file:
-    csvreader = csv.reader(file, delimiter=',')
-    for row in csvreader:
-        all_data.append(row)
-club_basic_data = all_data[1:][0]
-print(club_basic_data)
+def call_python_function():
+    leader_role = "King"
+    leader_name = "Bob Jones"
+    club_id = "Bird-Club"
+    print(leader_role,leader_name)
+    with open(f"static/data/{club_id}/{club_id}-leadership.csv", 'a',newline='', encoding='utf-8') as csv_file:
+        csvwriter = csv.writer(csv_file)
+        csvwriter.writerow([leader_name,leader_role,''.join([x[0].upper() for x in leader_name.split(' ')])])
+
+call_python_function()
