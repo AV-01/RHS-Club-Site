@@ -1,12 +1,14 @@
 import csv
+import pandas as pd
 
-def call_python_function():
-    leader_role = "King"
-    leader_name = "Bob Jones"
-    club_id = "Bird-Club"
-    print(leader_role,leader_name)
-    with open(f"static/data/{club_id}/{club_id}-leadership.csv", 'a',newline='', encoding='utf-8') as csv_file:
+df = pd.read_csv('static/data/club-data.csv')
+
+for index, row in df.iterrows():
+    real_path = row['id']
+    fields = ['img_path', 'social_name']
+    data = [['bi-google', "aryavrat.mishra@rocklinusd.org"]]
+    with open(f"static/data/{real_path}/{real_path}-socials.csv",
+              'w',newline='') as csv_file:
         csvwriter = csv.writer(csv_file)
-        csvwriter.writerow([leader_name,leader_role,''.join([x[0].upper() for x in leader_name.split(' ')])])
-
-call_python_function()
+        csvwriter.writerow(fields)
+        csvwriter.writerows(data)

@@ -245,7 +245,7 @@ def view_website(club_id):
     for i in social_data:
         socials_code = f"""
     <li class="list-group-item">
-    <img src="{i[0]}" class="img-fluid" style="max-width:36px;max-height:36px">
+    <i class="bi {i[0]}"></i>
       <span class="ms-2 text-primary">{i[1]}</span>
     </li>
     """
@@ -441,7 +441,7 @@ Meeting Dates
         Func.write(socials_code)
     middle_code_2 = f"""
 <li class="list-group-item">
-                        <a onclick="add_new_social()" href="#"><i class="bi bi-check-square"></i></a>
+                        <a onclick="add_social()" href="#"><i class="bi bi-check-square"></i></a>
                         <input class="ms-2 text-primary" placeholder="Contact info">
                         <input class="ms-4 text-primary" placeholder="Social name">
                     </li>
