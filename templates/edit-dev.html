@@ -113,8 +113,8 @@ Meeting Dates
 </li>
                     <li class="list-group-item">
                         <a onclick="add_social()" href="#"><i class="bi bi-check-square"></i></a>
-                        <input class="ms-2 text-primary" placeholder="Contact info" id="">
-                        <input class="ms-4 text-primary" placeholder="Social name">
+                        <input class="ms-2 text-primary" placeholder="Contact info" id="contact-info">
+                        <input class="ms-4 text-primary" placeholder="Icon name" id="icon-name">
                     </li>
                 </ul>
             </div>
@@ -199,7 +199,21 @@ Meeting Dates
             }
         });
     }
-
+function add_social() {
+        var contactInfo = $('#contact-info').val();
+        var iconName = $('#icon-name').val();
+        $.ajax({
+            url: '/add_social',
+            type: 'GET',
+            data: {contact_info: contactInfo, icon_name: iconName, club_id: clubId},
+            success: function(response) {
+                location.reload();
+            },
+            error: function(error) {
+                console.log(error);
+            }
+        });
+    }
 </script>
 </body>
 

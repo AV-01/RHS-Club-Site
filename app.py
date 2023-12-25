@@ -442,8 +442,8 @@ Meeting Dates
     middle_code_2 = f"""
 <li class="list-group-item">
                         <a onclick="add_social()" href="#"><i class="bi bi-check-square"></i></a>
-                        <input class="ms-2 text-primary" placeholder="Contact info">
-                        <input class="ms-4 text-primary" placeholder="Social name">
+                        <input class="ms-2 text-primary" placeholder="Contact info" id="contact-info">
+                        <input class="ms-4 text-primary" placeholder="Icon name" id="icon-name">
                     </li>
                 </ul>
             </div>
@@ -542,7 +542,21 @@ Meeting Dates
             }
         });
     }
-
+function add_social() {
+        var contactInfo = $('#contact-info').val();
+        var iconName = $('#icon-name').val();
+        $.ajax({
+            url: '/add_social',
+            type: 'GET',
+            data: {contact_info: contactInfo, icon_name: iconName, club_id: clubId},
+            success: function(response) {
+                location.reload();
+            },
+            error: function(error) {
+                console.log(error);
+            }
+        });
+    }
 </script>
 </body>
 
@@ -576,14 +590,23 @@ def editing_page(club):
     return render_template(f'{club}-edit.html', club=club)
 
 @app.route('/add_leadership')
-def call_python_function():
+def add_leadership():
     leader_role = request.args.get('leader_role')
     leader_name = request.args.get('leader_name')
     club_id = request.args.get('club_id')
-    print(leader_role,leader_name)
     with open(f"static/data/{club_id}/{club_id}-leadership.csv", 'a',newline='', encoding='utf-8') as csv_file:
         csvwriter = csv.writer(csv_file)
         csvwriter.writerow([leader_name, leader_role, ''.join([x[0].upper() for x in leader_name.split(' ')])])
+    return jsonify(result="Success!")
+
+@app.route('/add_social')
+def call_python_function():
+    contact_info = request.args.get('contact_info')
+    icon_name = request.args.get('icon_name')
+    club_id = request.args.get('club_id')
+    with open(f"static/data/{club_id}/{club_id}-socials.csv", 'a',newline='', encoding='utf-8') as csv_file:
+        csvwriter = csv.writer(csv_file)
+        csvwriter.writerow([icon_name, contact_info])
     return jsonify(result="Success!")
 
 app.run(host='0.0.0.0', port=5000,

@@ -116,10 +116,15 @@ Meeting Dates
       <span class="ms-2 text-primary">aryavrat.mishra@rocklinusd.org</span>
     </li>
     
+    <li class="list-group-item">
+    <a onclick="delete_social(1)" href="#"><i class="bi bi-trash"></i></a>
+      <span class="ms-2 text-primary">.secretspy</span>
+    </li>
+    
 <li class="list-group-item">
-                        <a onclick="add_new_social()" href="#"><i class="bi bi-check-square"></i></a>
-                        <input class="ms-2 text-primary" placeholder="Contact info">
-                        <input class="ms-4 text-primary" placeholder="Social name">
+                        <a onclick="add_social()" href="#"><i class="bi bi-check-square"></i></a>
+                        <input class="ms-2 text-primary" placeholder="Contact info" id="contact-info">
+                        <input class="ms-4 text-primary" placeholder="Icon name" id="icon-name">
                     </li>
                 </ul>
             </div>
@@ -242,7 +247,21 @@ Meeting Dates
             }
         });
     }
-
+function add_social() {
+        var contactInfo = $('#contact-info').val();
+        var iconName = $('#icon-name').val();
+        $.ajax({
+            url: '/add_social',
+            type: 'GET',
+            data: {contact_info: contactInfo, icon_name: iconName, club_id: clubId},
+            success: function(response) {
+                location.reload();
+            },
+            error: function(error) {
+                console.log(error);
+            }
+        });
+    }
 </script>
 </body>
 
