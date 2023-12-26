@@ -411,11 +411,11 @@ def edit_website(club_id):
             <div class="container-fluid text-secondary">
                 <div class="d-flex justify-content-between align-items-center">
 <p class="fw-bold mt-2">Use HTML text formatting!</p>
-<a class="btn btn-primary btn-sm rounded-pill" href="/view/Bird-Club">
+<a class="btn btn-primary btn-sm rounded-pill" href="/view/Bird-Club" onclick="update_description()">
     Save All <i class="bi bi-save"></i>
 </a>
                 </div>
-                <textarea class="form-control" style="min-width: 100%;min-height:100%;" rows=10 id="desc">
+                <textarea class="form-control" style="min-width: 100%;min-height:100%;" rows=10 id="description">
 """
     Func.write(starting_code)
     club_desc = Path(f'{real_path}/{club_id}-desc.txt').read_text()
@@ -605,6 +605,19 @@ function add_social() {
             }
         });
     }
+    function update_description() {
+    var description = $('#description').val();
+        $.ajax({
+            url: '/update_description',
+            type: 'GET',
+            data: {description: description, club_id: clubId},
+            success: function(response) {
+            },
+            error: function(error) {
+                console.log(error);
+            }
+        });
+    }
 </script>
 </body>
 
@@ -688,6 +701,13 @@ def delete_leadership():
                     int(leader_index))
     return jsonify(result="Success!")
 
+@app.route('/update_description')
+def update_description():
+    description = request.args.get('description')
+    club_id = request.args.get('club_id')
+    with open(f"static/data/{club_id}/{club_id}-desc.txt", "w") as text_file:
+        text_file.write(description)
+    return jsonify(result="Success!")
 
 app.run(host='0.0.0.0', port=5000,
         debug=True)  # Run the Application (in debug mode)

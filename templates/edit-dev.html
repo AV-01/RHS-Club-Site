@@ -64,11 +64,11 @@
             <div class="container-fluid text-secondary">
                 <div class="d-flex justify-content-between align-items-center">
 <p class="fw-bold mt-2">Use HTML text formatting!</p>
-<a class="btn btn-primary btn-sm rounded-pill" href="/edit/Bird-Club">
+<a class="btn btn-primary btn-sm rounded-pill" href="/edit/Bird-Club" onclick="update_description()">
     Save All <i class="bi bi-save"></i>
 </a>
                 </div>
-<textarea class="form-control" style="min-width: 100%;min-height:100%;" rows=10 id="desc">
+<textarea class="form-control" style="min-width: 100%;min-height:100%;" rows=10 id="description">
                 <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Volutpat maecenas volutpat blandit aliquam etiam erat. Id semper risus in hendrerit
 gravida rutrum quisque non tellus. Magna etiam tempor orci eu. Eget gravida cum sociis natoque penatibus et
 magnis dis. Cursus eget nunc scelerisque viverra mauris in aliquam sem. Montes nascetur ridiculus mus mauris
@@ -234,6 +234,19 @@ function add_social() {
             data: {leader_index: leaderIndex, club_id: clubId},
             success: function(response) {
                 location.reload();
+            },
+            error: function(error) {
+                console.log(error);
+            }
+        });
+    }
+    function update_description() {
+    var description = $('#description').val();
+        $.ajax({
+            url: '/update_description',
+            type: 'GET',
+            data: {description: description, club_id: clubId},
+            success: function(response) {
             },
             error: function(error) {
                 console.log(error);
