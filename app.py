@@ -1,7 +1,10 @@
-from flask import Flask, render_template, jsonify, request  # Import Flask Class, and render_template
-import pandas as pd
 import csv
 from pathlib import Path
+
+import pandas as pd
+from flask import (  # Import Flask Class, and render_template
+    Flask, jsonify, render_template, request,
+)
 
 app = Flask(  # Create a flask app
     __name__,
@@ -11,19 +14,21 @@ app = Flask(  # Create a flask app
 
 app = Flask(__name__)  # Create an Instance
 
-def delete_row(csv_file, row_number):
-  with open(csv_file, "r") as f:
-    reader = csv.reader(f)
-    headers = next(reader)
-    rows = []
-    for i, row in enumerate(reader):
-      if i != row_number:
-        rows.append(row)
-    with open(csv_file, "w") as f:
-      writer = csv.writer(f)
-      writer.writerow(headers)
-      for row in rows:
-        writer.writerow(row)
+
+def delete_real_row(csv_file, row_number):
+    with open(csv_file, "r") as f:
+        reader = csv.reader(f)
+        headers = next(reader)
+        rows = []
+        for i, row in enumerate(reader):
+            if i != row_number:
+                rows.append(row)
+        with open(csv_file, "w") as f:
+            writer = csv.writer(f)
+            writer.writerow(headers)
+            for row in rows:
+                writer.writerow(row)
+
 
 def quick_create_explore():
     Func = open("templates/explore.html", "w")
@@ -158,7 +163,6 @@ def view_website(club_id):
 <html>
 <head>
   <meta charset="utf-8">
-  <meta http-equiv="refresh" content="30">
   <meta name="viewport" content="width=device-width">
   <title>RHS Clubs</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
@@ -330,6 +334,7 @@ def view_website(club_id):
     Func.write(ending_code)
     Func.close()
 
+
 def edit_website(club_id):
     real_path = f"static/data/{club_id}"
     Func = open(f"templates/{club_id}-edit.html", "w")
@@ -452,7 +457,7 @@ Meeting Dates
     </li>
     """
         Func.write(socials_code)
-    middle_code_2 = f"""
+    middle_code_2 = """
 <li class="list-group-item">
                         <a onclick="add_social()" href="#"><i class="bi bi-check-square"></i></a>
                         <input class="ms-2 text-primary" placeholder="Contact info" id="contact-info">
@@ -583,7 +588,7 @@ function add_social() {
                 location.reload();
             },
             error: function(error) {
-                console.log(error);
+                location.reload();
             }
         });
     }
@@ -606,6 +611,8 @@ function add_social() {
 </html>
     """
     Func.write(ending_code2)
+
+
 @app.route('/')  # Route the Function
 def main():  # Run the function
     return render_template('home.html')  # Render the template
@@ -627,44 +634,60 @@ def landing_page(club):
     view_website(club)
     return render_template(f'{club}-view.html', club=club)
 
+
 @app.route('/edit/<club>')  # /landingpage/A
 def editing_page(club):
     edit_website(club)
     return render_template(f'{club}-edit.html', club=club)
+
 
 @app.route('/add_leadership')
 def add_leadership():
     leader_role = request.args.get('leader_role')
     leader_name = request.args.get('leader_name')
     club_id = request.args.get('club_id')
-    with open(f"static/data/{club_id}/{club_id}-leadership.csv", 'a',newline='', encoding='utf-8') as csv_file:
+    with open(f"static/data/{club_id}/{club_id}-leadership.csv",
+              'a',
+              newline='',
+              encoding='utf-8') as csv_file:
         csvwriter = csv.writer(csv_file)
-        csvwriter.writerow([leader_name, leader_role, ''.join([x[0].upper() for x in leader_name.split(' ')])])
+        csvwriter.writerow([
+            leader_name, leader_role,
+            ''.join([x[0].upper() for x in leader_name.split(' ')])
+        ])
     return jsonify(result="Success!")
+
 
 @app.route('/add_social')
 def add_social():
     contact_info = request.args.get('contact_info')
     icon_name = request.args.get('icon_name')
     club_id = request.args.get('club_id')
-    with open(f"static/data/{club_id}/{club_id}-socials.csv", 'a',newline='', encoding='utf-8') as csv_file:
+    with open(f"static/data/{club_id}/{club_id}-socials.csv",
+              'a',
+              newline='',
+              encoding='utf-8') as csv_file:
         csvwriter = csv.writer(csv_file)
         csvwriter.writerow([icon_name, contact_info])
     return jsonify(result="Success!")
 
+
 @app.route('/delete_social')
 def delete_social():
-    social_index = request.args.get('social_index')
+    row_number = request.args.get('social_index')
     club_id = request.args.get('club_id')
-    delete_row(f"static/data/{club_id}/{club_id}-socials.csv", social_index)
-    return jsonify(result="Success!")
+    csv_file = f"static/data/{club_id}/{club_id}-socials.csv"
+    delete_real_row(csv_file, int(row_number))
+
 
 @app.route('/delete_leadership')
 def delete_leadership():
     leader_index = request.args.get('leader_index')
     club_id = request.args.get('club_id')
-    delete_row(f"static/data/{club_id}/{club_id}-leadership.csv", leader_index)
+    delete_real_row(f"static/data/{club_id}/{club_id}-leadership.csv",
+                    int(leader_index))
     return jsonify(result="Success!")
+
 
 app.run(host='0.0.0.0', port=5000,
         debug=True)  # Run the Application (in debug mode)
