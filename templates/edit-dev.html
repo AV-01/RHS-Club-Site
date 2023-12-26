@@ -214,6 +214,32 @@ function add_social() {
             }
         });
     }
+    function delete_social(socialIndex) {
+        $.ajax({
+            url: '/delete_social',
+            type: 'GET',
+            data: {social_index: socialIndex, club_id: clubId},
+            success: function(response) {
+                location.reload();
+            },
+            error: function(error) {
+                console.log(error);
+            }
+        });
+    }
+    function delete_leadership(leaderIndex) {
+        $.ajax({
+            url: '/delete_leadership',
+            type: 'GET',
+            data: {leader_index: leaderIndex, club_id: clubId},
+            success: function(response) {
+                location.reload();
+            },
+            error: function(error) {
+                console.log(error);
+            }
+        });
+    }
 </script>
 </body>
 

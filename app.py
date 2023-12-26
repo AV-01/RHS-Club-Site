@@ -11,6 +11,19 @@ app = Flask(  # Create a flask app
 
 app = Flask(__name__)  # Create an Instance
 
+def delete_row(csv_file, row_number):
+  with open(csv_file, "r") as f:
+    reader = csv.reader(f)
+    headers = next(reader)
+    rows = []
+    for i, row in enumerate(reader):
+      if i != row_number:
+        rows.append(row)
+    with open(csv_file, "w") as f:
+      writer = csv.writer(f)
+      writer.writerow(headers)
+      for row in rows:
+        writer.writerow(row)
 
 def quick_create_explore():
     Func = open("templates/explore.html", "w")
@@ -561,6 +574,32 @@ function add_social() {
             }
         });
     }
+    function delete_social(socialIndex) {
+        $.ajax({
+            url: '/delete_social',
+            type: 'GET',
+            data: {social_index: socialIndex, club_id: clubId},
+            success: function(response) {
+                location.reload();
+            },
+            error: function(error) {
+                console.log(error);
+            }
+        });
+    }
+    function delete_leadership(leaderIndex) {
+        $.ajax({
+            url: '/delete_leadership',
+            type: 'GET',
+            data: {leader_index: leaderIndex, club_id: clubId},
+            success: function(response) {
+                location.reload();
+            },
+            error: function(error) {
+                console.log(error);
+            }
+        });
+    }
 </script>
 </body>
 
@@ -604,13 +643,27 @@ def add_leadership():
     return jsonify(result="Success!")
 
 @app.route('/add_social')
-def call_python_function():
+def add_social():
     contact_info = request.args.get('contact_info')
     icon_name = request.args.get('icon_name')
     club_id = request.args.get('club_id')
     with open(f"static/data/{club_id}/{club_id}-socials.csv", 'a',newline='', encoding='utf-8') as csv_file:
         csvwriter = csv.writer(csv_file)
         csvwriter.writerow([icon_name, contact_info])
+    return jsonify(result="Success!")
+
+@app.route('/delete_social')
+def delete_social():
+    social_index = request.args.get('social_index')
+    club_id = request.args.get('club_id')
+    delete_row(f"static/data/{club_id}/{club_id}-socials.csv", social_index)
+    return jsonify(result="Success!")
+
+@app.route('/delete_leadership')
+def delete_leadership():
+    leader_index = request.args.get('leader_index')
+    club_id = request.args.get('club_id')
+    delete_row(f"static/data/{club_id}/{club_id}-leadership.csv", leader_index)
     return jsonify(result="Success!")
 
 app.run(host='0.0.0.0', port=5000,
