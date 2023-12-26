@@ -393,7 +393,7 @@ def edit_website(club_id):
             <div class="container-fluid text-secondary">
                 <div class="d-flex justify-content-between align-items-center">
 <p class="fw-bold mt-2">Use HTML text formatting!</p>
-<a class="btn btn-primary btn-sm rounded-pill" href="/edit/Bird-Club">
+<a class="btn btn-primary btn-sm rounded-pill" href="/view/Bird-Club">
     Save All <i class="bi bi-save"></i>
 </a>
                 </div>
@@ -525,7 +525,11 @@ Meeting Dates
         integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
 <script src="explore-script.js"></script>
 <script>
-    var clubId = "Bird-Club";
+"""
+    Func.write(ending_code)
+    ending_code1 = f"var clubId = \"{club_id}\";"
+    Func.write(ending_code1)
+    ending_code2 = """
     function add_leadership() {
         var leaderRole = $('#leader-role').val();
         var leaderName = $('#leader-name').val();
@@ -562,7 +566,7 @@ function add_social() {
 
 </html>
     """
-    Func.write(ending_code)
+    Func.write(ending_code2)
 @app.route('/')  # Route the Function
 def main():  # Run the function
     return render_template('home.html')  # Render the template
