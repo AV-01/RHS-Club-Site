@@ -326,7 +326,6 @@ def view_website(club_id):
     </div>
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"
       integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
-    <script src="explore-script.js"></script>
   </body>
 
   </html>
@@ -349,7 +348,6 @@ def edit_website(club_id):
 <html>
 <head>
     <meta charset="utf-8">
-    <meta http-equiv="refresh" content="30">
     <meta name="viewport" content="width=device-width">
     <title>RHS Clubs</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
@@ -411,7 +409,7 @@ def edit_website(club_id):
             <div class="container-fluid text-secondary">
                 <div class="d-flex justify-content-between align-items-center">
 <p class="fw-bold mt-2">Use HTML text formatting!</p>
-<a class="btn btn-primary btn-sm rounded-pill" href="/view/Bird-Club" onclick="update_description()">
+<a class="btn btn-primary btn-sm rounded-pill" href="/view/{club_basic_data[4]}" onclick="update_all()">
     Save All <i class="bi bi-save"></i>
 </a>
                 </div>
@@ -430,7 +428,7 @@ def edit_website(club_id):
 Meeting Dates
                 </div>
                 <div class="card-body">
-<input class="card-title fw-bold" placeholder="{club_basic_data[5]}">
+<input class="fw-bold" placeholder="{club_basic_data[5]}" id="meeting-dates">
                 </div>
             </div>
             <div class="card ms-5 mt-5 shadow">
@@ -541,7 +539,6 @@ Meeting Dates
 </div>
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"
         integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
-<script src="explore-script.js"></script>
 <script>
 """
     Func.write(ending_code)
@@ -605,12 +602,14 @@ function add_social() {
             }
         });
     }
-    function update_description() {
+    function update_all() {
     var description = $('#description').val();
+    var name = $('#club-name').val();
+    var new_meeting = $('meeting-dates').val();
         $.ajax({
-            url: '/update_description',
+            url: '/update_all',
             type: 'GET',
-            data: {description: description, club_id: clubId},
+            data: {description:description,club_name:name,meeting: new_meeting,club_id: clubId},
             success: function(response) {
             },
             error: function(error) {
@@ -701,13 +700,18 @@ def delete_leadership():
                     int(leader_index))
     return jsonify(result="Success!")
 
-@app.route('/update_description')
-def update_description():
+
+@app.route('/update_all')
+def update_all():
     description = request.args.get('description')
+    name = request.args.get('club_name')
+    meeting = request.args.get('meeting')
     club_id = request.args.get('club_id')
+    print(description, name, meeting, club_id)
     with open(f"static/data/{club_id}/{club_id}-desc.txt", "w") as text_file:
         text_file.write(description)
     return jsonify(result="Success!")
+
 
 app.run(host='0.0.0.0', port=5000,
         debug=True)  # Run the Application (in debug mode)

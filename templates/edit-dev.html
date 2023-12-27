@@ -64,7 +64,7 @@
             <div class="container-fluid text-secondary">
                 <div class="d-flex justify-content-between align-items-center">
 <p class="fw-bold mt-2">Use HTML text formatting!</p>
-<a class="btn btn-primary btn-sm rounded-pill" href="/edit/Bird-Club" onclick="update_description()">
+<a class="btn btn-primary btn-sm rounded-pill" href="/edit/Bird-Club" onclick="update_all()">
     Save All <i class="bi bi-save"></i>
 </a>
                 </div>
@@ -97,7 +97,7 @@ Commodo odio aenean sed adipiscing diam donec. Viverra nam libero justo laoreet 
 Meeting Dates
                 </div>
                 <div class="card-body">
-<input class="card-title fw-bold" placeholder="Whenever I feel like it">
+<input class="card-title fw-bold" placeholder="Whenever I feel like it" id="meeting-dates">
                 </div>
             </div>
             <div class="card ms-5 mt-5 shadow">
@@ -240,12 +240,14 @@ function add_social() {
             }
         });
     }
-    function update_description() {
+    function update_all() {
     var description = $('#description').val();
+    var name = $('#club-name').val();
+    var new_meeting = $('meeting-dates').val();
         $.ajax({
-            url: '/update_description',
+            url: '/update_all',
             type: 'GET',
-            data: {description: description, club_id: clubId},
+            data: {description: description, club_name: name, meeting: new_meeting, club_id: clubId},
             success: function(response) {
             },
             error: function(error) {
