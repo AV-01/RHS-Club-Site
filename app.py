@@ -5,6 +5,7 @@ import pandas as pd
 from flask import (  # Import Flask Class, and render_template
     Flask, jsonify, render_template, request,
 )
+import shutil
 
 app = Flask(  # Create a flask app
     __name__,
@@ -720,24 +721,44 @@ def update_all():
         with open(f"static/data/{club_id}/{club_id}.csv", 'r', newline='') as source, open(f"static/data/{club_id}/{club_id}-results.csv", 'w', newline='') as result:
             csvreader = csv.reader(source)
             csvwriter = csv.writer(result)
+            header = next(csvreader)
+            csvwriter.writerow(header)
             for row in csvreader:
                 row[5] = meeting
                 csvwriter.writerow(row)
         os.remove(f"static/data/{club_id}/{club_id}.csv")
         os.rename(f"static/data/{club_id}/{club_id}-results.csv", f"static/data/{club_id}/{club_id}.csv")
-    # if name != "":
-    #     new_club_id = ''.join(letter for letter in name if letter.isalnum())
-    #     os.mkdir(f"static/data/{new_club_id}")
-    #     with open(f"static/data/{club_id}/{club_id}.csv", 'r', newline='') as source, open(f"static/data/{new_club_id}/{new_club_id}.csv", 'w', newline='') as result:
-    #         csvreader = csv.reader(source)
-    #         csvwriter = csv.writer(result)
-    #         for row in csvreader:
-    #             csvwriter.writerow(row)
-    #     with open(f"static/data/{club_id}/{club_id}-leadership.csv", 'r', newline='') as source, open(f"static/data/{new_club_id}/{new_club_id}-leadership.csv", 'w', newline='') as result:
-    #         csvreader = csv.reader(source)
-    #         csvwriter = csv.writer(result)
-    #         for row in csvreader:
-    #             csvwriter.writerow(row)
+    if name != "":
+        new_club_id = ''.join(letter for letter in name if letter.isalnum())
+        if new_club_id == club_id:
+            return jsonify(result="Success!")
+        os.mkdir(f"static/data/{new_club_id}")
+        with open(f"static/data/{club_id}/{club_id}.csv", 'r', newline='') as source, open(f"static/data/{new_club_id}/{new_club_id}.csv", 'w', newline='') as result:
+            csvreader = csv.reader(source)
+            csvwriter = csv.writer(result)
+            header = next(csvreader)
+            csvwriter.writerow(header)
+            for row in csvreader:
+                row[0] = name
+                row[4] = new_club_id
+                csvwriter.writerow(row)
+        os.rename(f"static/data/{club_id}/{club_id}-leadership.csv",f"static/data/{new_club_id}/{new_club_id}-leadership.csv")
+        os.rename(f"static/data/{club_id}/{club_id}-socials.csv", f"static/data/{new_club_id}/{new_club_id}-socials.csv")
+        os.rename(f"static/data/{club_id}/{club_id}-desc.txt", f"static/data/{new_club_id}/{new_club_id}-desc.txt")
+        try:
+            shutil.rmtree(f"static/data/{club_id}")
+        except OSError as e:
+            print(e)
+        with open(f"static/data/club-data.csv", 'r', newline='') as source, open(f"static/data/club-data-results.csv", 'w', newline='') as result:
+            csvreader = csv.reader(source)
+            csvwriter = csv.writer(result)
+            header = next(csvreader)
+            csvwriter.writerow(header)
+            for row in csvreader:
+                if row[5] == club_id:
+                    row[5] = new_club_id
+                    row[0] = name
+                csvwriter.writerow(row)
     return jsonify(result="Success!")
 
 

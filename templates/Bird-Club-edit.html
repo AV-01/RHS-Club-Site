@@ -269,7 +269,7 @@ function add_social() {
     var description = $('#description').val();
     var name = $('#club-name').val();
     var new_meeting = $('#meeting-dates').val();
-        $.ajax({
+    $.ajax({
             url: '/update_all',
             type: 'GET',
             data: {description:description,club_name:name,meeting: new_meeting,club_id: clubId},
