@@ -1,6 +1,6 @@
 import csv
 from pathlib import Path
-
+import os
 import pandas as pd
 from flask import (  # Import Flask Class, and render_template
     Flask, jsonify, render_template, request,
@@ -14,6 +14,12 @@ app = Flask(  # Create a flask app
 
 app = Flask(__name__)  # Create an Instance
 
+def trim_newlines(filename):
+    with open(filename, "r") as f:
+        contents = f.read()
+    trimmed_contents = contents.strip()
+    with open(filename, "w") as f:
+        f.write(trimmed_contents)
 
 def delete_real_row(csv_file, row_number):
     with open(csv_file, "r") as f:
@@ -42,7 +48,7 @@ def quick_create_explore():
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
     integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
-  <link href="static/css/style.css" rel="stylesheet" type="text/css" />
+  <link href="/static/css/style.css" rel="stylesheet" type="text/css" />
 </head>
 
 <body>
@@ -168,7 +174,7 @@ def view_website(club_id):
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
     integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
-  <link href="static/css/style.css" rel="stylesheet" type="text/css" />
+  <link href="/static/css/style.css" rel="stylesheet" type="text/css" />
 </head>
 
 <body>
@@ -353,7 +359,7 @@ def edit_website(club_id):
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
-    <link href="static/css/style.css" rel="stylesheet" type="text/css" />
+    <link href="/static/css/style.css" rel="stylesheet" type="text/css" />
 </head>
 
 <body>
@@ -605,7 +611,7 @@ function add_social() {
     function update_all() {
     var description = $('#description').val();
     var name = $('#club-name').val();
-    var new_meeting = $('meeting-dates').val();
+    var new_meeting = $('#meeting-dates').val();
         $.ajax({
             url: '/update_all',
             type: 'GET',
@@ -707,9 +713,31 @@ def update_all():
     name = request.args.get('club_name')
     meeting = request.args.get('meeting')
     club_id = request.args.get('club_id')
-    print(description, name, meeting, club_id)
     with open(f"static/data/{club_id}/{club_id}-desc.txt", "w") as text_file:
         text_file.write(description)
+    trim_newlines(f"static/data/{club_id}/{club_id}-desc.txt")
+    if meeting != "":
+        with open(f"static/data/{club_id}/{club_id}.csv", 'r', newline='') as source, open(f"static/data/{club_id}/{club_id}-results.csv", 'w', newline='') as result:
+            csvreader = csv.reader(source)
+            csvwriter = csv.writer(result)
+            for row in csvreader:
+                row[5] = meeting
+                csvwriter.writerow(row)
+        os.remove(f"static/data/{club_id}/{club_id}.csv")
+        os.rename(f"static/data/{club_id}/{club_id}-results.csv", f"static/data/{club_id}/{club_id}.csv")
+    # if name != "":
+    #     new_club_id = ''.join(letter for letter in name if letter.isalnum())
+    #     os.mkdir(f"static/data/{new_club_id}")
+    #     with open(f"static/data/{club_id}/{club_id}.csv", 'r', newline='') as source, open(f"static/data/{new_club_id}/{new_club_id}.csv", 'w', newline='') as result:
+    #         csvreader = csv.reader(source)
+    #         csvwriter = csv.writer(result)
+    #         for row in csvreader:
+    #             csvwriter.writerow(row)
+    #     with open(f"static/data/{club_id}/{club_id}-leadership.csv", 'r', newline='') as source, open(f"static/data/{new_club_id}/{new_club_id}-leadership.csv", 'w', newline='') as result:
+    #         csvreader = csv.reader(source)
+    #         csvwriter = csv.writer(result)
+    #         for row in csvreader:
+    #             csvwriter.writerow(row)
     return jsonify(result="Success!")
 
 
