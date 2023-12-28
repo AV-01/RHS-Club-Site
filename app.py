@@ -351,6 +351,12 @@ def edit_website(club_id):
         for row in csvreader:
             all_data.append(row)
     club_basic_data = all_data[1:][0]
+    club_slogan = ""
+    with open(f"static/data/club-data.csv", 'r') as file:
+        csvreader = csv.reader(file, delimiter=',')
+        for row in csvreader:
+            if row[5] == club_basic_data[4]:
+                club_slogan = row[2]
     starting_code = f"""
 <!DOCTYPE html>
 <html>
@@ -412,6 +418,7 @@ def edit_website(club_id):
  style="max-width:140px;max-height:140px">
                 <div class="ms-5">
                     <input class="form-control form-control-lg fw-bold" type="text" placeholder="{club_basic_data[0]}" id="club-name">
+                    <input class="form-control form-control-lg fw-bold" type="text" placeholder="{club_slogan}" id="club-slogan" data-toggle="tooltip" data-placement="bottom" title="Club slogan">
                 </div>
             </div>
             <div class="container-fluid text-secondary">
@@ -614,13 +621,14 @@ function add_social() {
     var description = $('#description').val();
     var name = $('#club-name').val();
     var new_meeting = $('#meeting-dates').val();
+    var club_slogan  = $('#club-slogan').val();
     console.log(name)
     var regex = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+/g    
     var new_club_id = name.replace(regex, '').replace(/[_\s]/g, '-');
         $.ajax({
             url: '/update_all',
             type: 'GET',
-            data: {description:description,club_name:name,meeting: new_meeting,club_id: clubId},
+            data: {description:description,club_name:name,meeting: new_meeting,club_id: clubId,club_slogan:club_slogan},
             success: function(response) {
             if(name === ""){
                 window.location.replace("/view/"+clubId);
@@ -724,6 +732,7 @@ def update_all():
     name = request.args.get('club_name')
     meeting = request.args.get('meeting')
     club_id = request.args.get('club_id')
+    club_slogan = request.args.get('club_slogan')
     with open(f"static/data/{club_id}/{club_id}-desc.txt", "w") as text_file:
         text_file.write(description)
     trim_newlines(f"static/data/{club_id}/{club_id}-desc.txt")
@@ -738,6 +747,18 @@ def update_all():
                 csvwriter.writerow(row)
         os.remove(f"static/data/{club_id}/{club_id}.csv")
         os.rename(f"static/data/{club_id}/{club_id}-results.csv", f"static/data/{club_id}/{club_id}.csv")
+    if club_slogan != "":
+        with open(f"static/data/club-data.csv", 'r', newline='') as source, open(f"static/data/club-data-results.csv", 'w', newline='') as result:
+            csvreader = csv.reader(source)
+            csvwriter = csv.writer(result)
+            header = next(csvreader)
+            csvwriter.writerow(header)
+            for row in csvreader:
+                if row[5] == club_id:
+                    row[2] = club_slogan
+                csvwriter.writerow(row)
+        os.remove("static/data/club-data.csv")
+        os.rename("static/data/club-data-results.csv", "static/data/club-data.csv")
     if name != "":
         new_club_id = re.sub(r'[^a-zA-Z0-9\s]', '', name)
         new_club_id = new_club_id.replace(' ', '-')
@@ -770,8 +791,6 @@ def update_all():
                     row[5] = new_club_id
                     row[0] = name
                 csvwriter.writerow(row)
-        os.remove("static/data/club-data.csv")
-        os.rename("static/data/club-data-results.csv", "static/data/club-data.csv")
     return jsonify(result="Success!")
 
 
