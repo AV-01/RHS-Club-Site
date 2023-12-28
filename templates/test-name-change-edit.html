@@ -51,14 +51,14 @@
 Nature
     </a>
 </li>
-<li class="breadcrumb-item active" aria-current="page">Bird Club</li>
+<li class="breadcrumb-item active" aria-current="page">test name change</li>
                 </ol>
             </nav>
             <div class="d-flex align-items-center mt-lg-4">
                 <img src="/static/icons/bird-club.jpg" class="img-fluid rounded-pill img-thumbnail"
  style="max-width:140px;max-height:140px">
                 <div class="ms-5">
-                    <input class="form-control form-control-lg fw-bold" type="text" placeholder="Bird Club" id="club-name">
+                    <input class="form-control form-control-lg fw-bold" type="text" placeholder="test name change" id="club-name">
                 </div>
             </div>
             <div class="container-fluid text-secondary">
@@ -207,7 +207,7 @@ Meeting Dates
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"
         integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
 <script>
-var clubId = "Bird-Club";
+var clubId = "test-name-change";
     function add_leadership() {
         var leaderRole = $('#leader-role').val();
         var leaderName = $('#leader-name').val();
@@ -271,8 +271,7 @@ function add_social() {
     var new_meeting = $('#meeting-dates').val();
     console.log(name)
     var regex = /[!@#$%^&*()_+\-=\[\]{};':"\|,.<>\/?]+/g    
-    var result = name.replace(regex, '');
-    console.log(result);
+    var result = name.replace(regex, '').replace(' ','-');
     console.log(result);
         $.ajax({
             url: '/update_all',

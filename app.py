@@ -6,6 +6,7 @@ from flask import (  # Import Flask Class, and render_template
     Flask, jsonify, render_template, request,
 )
 import shutil
+import re
 
 app = Flask(  # Create a flask app
     __name__,
@@ -416,7 +417,7 @@ def edit_website(club_id):
             <div class="container-fluid text-secondary">
                 <div class="d-flex justify-content-between align-items-center">
 <p class="fw-bold mt-2">Use HTML text formatting!</p>
-<a class="btn btn-primary btn-sm rounded-pill" href="/view/{club_basic_data[4]}" onclick="update_all()">
+<a class="btn btn-primary btn-sm rounded-pill" onclick="update_all()">
     Save All <i class="bi bi-save"></i>
 </a>
                 </div>
@@ -613,11 +614,20 @@ function add_social() {
     var description = $('#description').val();
     var name = $('#club-name').val();
     var new_meeting = $('#meeting-dates').val();
+    console.log(name)
+    var regex = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+/g    
+    var new_club_id = name.replace(regex, '').replace(/[_\s]/g, '-');
         $.ajax({
             url: '/update_all',
             type: 'GET',
             data: {description:description,club_name:name,meeting: new_meeting,club_id: clubId},
             success: function(response) {
+            if(name === ""){
+                window.location.replace("/view/"+clubId);
+            }
+            else{
+                window.location.replace("/view/"+new_club_id);
+            }
             },
             error: function(error) {
                 console.log(error);
@@ -729,7 +739,8 @@ def update_all():
         os.remove(f"static/data/{club_id}/{club_id}.csv")
         os.rename(f"static/data/{club_id}/{club_id}-results.csv", f"static/data/{club_id}/{club_id}.csv")
     if name != "":
-        new_club_id = ''.join(letter for letter in name if letter.isalnum())
+        new_club_id = re.sub(r'[^a-zA-Z0-9\s]', '', name)
+        new_club_id = new_club_id.replace(' ', '-')
         if new_club_id == club_id:
             return jsonify(result="Success!")
         os.mkdir(f"static/data/{new_club_id}")
@@ -759,6 +770,8 @@ def update_all():
                     row[5] = new_club_id
                     row[0] = name
                 csvwriter.writerow(row)
+        os.remove("static/data/club-data.csv")
+        os.rename("static/data/club-data-results.csv", "static/data/club-data.csv")
     return jsonify(result="Success!")
 
 
