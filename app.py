@@ -418,7 +418,7 @@ def edit_website(club_id):
  style="max-width:140px;max-height:140px">
                 <div class="ms-5">
                     <input class="form-control form-control-lg fw-bold" type="text" placeholder="{club_basic_data[0]}" id="club-name">
-                    <input class="form-control form-control-lg fw-bold" type="text" placeholder="{club_slogan}" id="club-slogan" data-toggle="tooltip" data-placement="bottom" title="Club slogan">
+                    <input class="form-control form-control-md" type="text" placeholder="{club_slogan}" id="club-slogan" data-toggle="tooltip" data-placement="bottom" title="Club slogan">
                 </div>
             </div>
             <div class="container-fluid text-secondary">
@@ -473,8 +473,8 @@ Meeting Dates
     middle_code_2 = """
 <li class="list-group-item">
                         <a onclick="add_social()" href="#"><i class="bi bi-check-square"></i></a>
-                        <input class="ms-2 text-primary" placeholder="Contact info" id="contact-info">
-                        <input class="ms-4 text-primary" placeholder="Icon name" id="icon-name">
+                        <input class="form-control form-control-md ms-2 text-primary" placeholder="Contact info" id="contact-info">
+                        <input class="form-control form-control-md ms-4 text-primary" placeholder="Icon name" id="icon-name">
                     </li>
                 </ul>
             </div>
@@ -527,8 +527,8 @@ Meeting Dates
                     </div>
                     <div>
                         <div class="card-body">
-                            <input class="text-secondary" placeholder="Role" id="leader-role">
-                            <input class="" placeholder="Name" id="leader-name">
+                            <input class="form-control form-control-md text-secondary" placeholder="Role" id="leader-role">
+                            <input class="form-control form-control-md" placeholder="Name" id="leader-name">
                         </div>
                     </div>
                 </div>
@@ -642,6 +642,22 @@ function add_social() {
             }
         });
     }
+    $(document).ready(function () {
+                  login();
+                function login() {
+        // Use window.prompt for combined username and password input
+          var username = prompt("Enter your username:");
+                var password = prompt("Enter your password:");
+
+                // For demonstration purposes, check if the username and password are "admin"
+                if (username === "admin" && password === "admin") {
+                  alert("Login successful!");
+          } else {
+                  // Incorrect credentials, remove all content from the page
+                  $("body").empty();
+          }
+    }
+});
 </script>
 </body>
 
