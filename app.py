@@ -232,7 +232,7 @@ def view_website(club_id):
           <div class="container-fluid text-secondary">
             <div class="d-flex justify-content-between align-items-center">
               <p class="fw-bold mt-2">Last modified: 3 months ago</p>
-              <a class="btn btn-primary btn-sm rounded-pill" href="/edit/{club_basic_data[4]}">
+              <a class="btn btn-primary btn-sm rounded-pill" href="/login/{club_basic_data[4]}">
                 Edit <i class="bi bi-pen"></i>
               </a>
             </div>
@@ -642,21 +642,6 @@ function add_social() {
             }
         });
     }
-    $(document).ready(function () {
-                  login();
-                function login() {
-        // Use window.prompt for combined username and password input
-          var username = prompt("Enter your username:");
-                var password = prompt("Enter your password:");
-
-                // For demonstration purposes, check if the username and password are "admin"
-                if (username === "admin" && password === "admin") {
-                  alert("Login successful!");
-          } else {
-                  // Incorrect credentials, remove all content from the page
-                  $("body").empty();
-          }
-    }
 });
 </script>
 </body>
@@ -683,7 +668,7 @@ def explore():  # Run the function
 
 
 @app.route('/view/<club>')  # /landingpage/A
-def landing_page(club):
+def view_page(club):
     view_website(club)
     return render_template(f'{club}-view.html', club=club)
 
@@ -693,6 +678,97 @@ def editing_page(club):
     edit_website(club)
     return render_template(f'{club}-edit.html', club=club)
 
+@app.route('/login/<club_id>')
+def login_page(club_id):
+    Func = open(f"templates/{club_id}-login.html", "w")
+    starting_code = """
+    <!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="refresh" content="30">
+    <meta name="viewport" content="width=device-width">
+    <title>RHS Clubs</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
+    <link href="static/css/style.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+<nav class="navbar navbar-expand-lg bg-body-tertiary">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="#">RHS Clubs</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link" href="home">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="/explore">Explore</a>
+                </li>
+                <li class="nav-ite">
+                    <a class="nav-link" href="#">Calendar</a>
+                </li>
+            </ul>
+            <form class="d-flex" role="search">
+                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                <button class="btn btn-outline-success" type="submit">Search</button>
+            </form>
+        </div>
+    </div>
+</nav>
+<form>
+    <div class="container mt-3 mt-lg-4">
+        <h1>Log in</h1>
+        <p class="mb-3">In order to continue to the edit website, please confirm your identity.</p>
+    <div class="form-group">
+        <label for="username">Username</label>
+        <input type="text" class="form-control" id="username" placeholder="Username">
+    </div>
+    <div class="form-group mb-3">
+        <label for="password">Password</label>
+        <input type="password" class="form-control" id="password" placeholder="Password">
+    </div>
+    <button type="submit" class="btn btn-danger" onclick="help()">Forgot username/password</button>
+    <button type="submit" class="btn btn-primary" onclick="login()">Submit</button>
+    </div>
+</form>
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"
+        integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+<script src="/static/scripts/explore-script.js"></script>
+<script>
+    """
+    Func.write(starting_code)
+    Func.write(f'clubId = "{club_id}";')
+    ending_code = """
+    function help(){
+        alert("Please email aryavrat.mishra@rocklinusd.org for help!")
+    }
+     function login() {
+         var username = $("#username").val();
+         var password = $("#password").val();
+         var params = {
+          username: username,
+          password: password,
+        };
+        var queryString = $.param(params);
+        targetURL = `/edit/${clubId}`
+        var finalURL = targetURL + '?' + queryString;
+        console.log(finalURL)
+        window.location.replace("/home")
+     }
+</script>
+</body>
+</html>
+    """
+    Func.write(ending_code)
+    Func.close()
+    return render_template(f'{club_id}-login.html',club_id=club_id)
 
 @app.route('/add_leadership')
 def add_leadership():
