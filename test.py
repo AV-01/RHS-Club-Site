@@ -1,14 +1,24 @@
 import csv
-import pandas as pd
+import os
+import requests
 
-df = pd.read_csv('static/data/club-data.csv')
-
-for index, row in df.iterrows():
-    real_path = row['id']
-    fields = ['img_path', 'social_name']
-    data = [['bi-google', "aryavrat.mishra@rocklinusd.org"]]
-    with open(f"static/data/{real_path}/{real_path}-socials.csv",
-              'w',newline='') as csv_file:
-        csvwriter = csv.writer(csv_file)
-        csvwriter.writerow(fields)
-        csvwriter.writerows(data)
+with open(f"static/data/club-data.csv", 'r', newline='') as source2:
+    csvreader = csv.reader(source2)
+    header = next(csvreader)
+    for row in csvreader:
+        club_id = row[5]
+        with open(f"static/data/{club_id}/{club_id}.csv", 'r', newline='') as source, open(f"static/data/{club_id}/{club_id}-results.csv", 'w', newline='') as result:
+            csvreader = csv.reader(source)
+            csvwriter = csv.writer(result)
+            header = next(csvreader)
+            header.append("username")
+            header.append("password")
+            csvwriter.writerow(header)
+            for row in csvreader:
+                row.append(club_id)
+                r = requests.get(url = "https://passwordinator.onrender.com/?num=true&char=true&caps=true&len=10")
+                data = r.json()
+                row.append(data['data'])
+                csvwriter.writerow(row)
+        os.remove(f"static/data/{club_id}/{club_id}.csv")
+        os.rename(f"static/data/{club_id}/{club_id}-results.csv",f"static/data/{club_id}/{club_id}.csv")
