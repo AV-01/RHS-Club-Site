@@ -291,21 +291,6 @@ function add_social() {
             }
         });
     }
-    $(document).ready(function () {
-                  login();
-                function login() {
-        // Use window.prompt for combined username and password input
-          var username = prompt("Enter your username:");
-                var password = prompt("Enter your password:");
-
-                // For demonstration purposes, check if the username and password are "admin"
-                if (username === "admin" && password === "admin") {
-                  alert("Login successful!");
-          } else {
-                  // Incorrect credentials, remove all content from the page
-                  $("body").empty();
-          }
-    }
 });
 </script>
 </body>

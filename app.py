@@ -675,6 +675,9 @@ def view_page(club):
 
 @app.route('/edit/<club>')  # /landingpage/A
 def editing_page(club):
+    username = request.args.get('username')
+    password = request.args.get('password')
+    club_id = request.args.get('club_id')
     edit_website(club)
     return render_template(f'{club}-edit.html', club=club)
 
@@ -734,9 +737,8 @@ def login_page(club_id):
         <label for="password">Password</label>
         <input type="password" class="form-control" id="password" placeholder="Password">
     </div>
-    <button type="submit" class="btn btn-danger" onclick="help()">Forgot username/password</button>
-    <button type="submit" class="btn btn-primary" onclick="login()">Submit</button>
-    </div>
+    <a class="btn btn-danger" onclick="help()">Forgot username/password</a>
+    <a class="btn btn-primary" onclick="login()">Submit</a>    </div>
 </form>
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"
         integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
@@ -760,7 +762,7 @@ def login_page(club_id):
         targetURL = `/edit/${clubId}`
         var finalURL = targetURL + '?' + queryString;
         console.log(finalURL)
-        window.location.replace("/home")
+        window.location.replace(finalURL)
      }
 </script>
 </body>
