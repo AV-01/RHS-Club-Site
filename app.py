@@ -642,7 +642,6 @@ function add_social() {
             }
         });
     }
-});
 </script>
 </body>
 
@@ -685,12 +684,9 @@ def editing_page(club):
             real_password = row[7]
     if real_username == username and real_password == password:
         edit_website(club)
+        return render_template(f'{club}-edit.html', club=club)
     else:
-        real_path = f"static/data/{club}"
-        Func = open(f"templates/{club}-edit.html", "w")
-        Func.write("Unauthorized")
-        Func.close()
-    return render_template(f'{club}-edit.html', club=club)
+        return render_template('unauth-access.html', club=club)
 
 @app.route('/login/<club_id>')
 def login_page(club_id):
