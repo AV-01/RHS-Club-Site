@@ -677,8 +677,19 @@ def view_page(club):
 def editing_page(club):
     username = request.args.get('username')
     password = request.args.get('password')
-    club_id = request.args.get('club_id')
-    edit_website(club)
+    with open(f"static/data/{club}/{club}.csv", 'r', newline='') as source:
+        csvreader = csv.reader(source)
+        header = next(csvreader)
+        for row in csvreader:
+            real_username = row[6]
+            real_password = row[7]
+    if real_username == username and real_password == password:
+        edit_website(club)
+    else:
+        real_path = f"static/data/{club}"
+        Func = open(f"templates/{club}-edit.html", "w")
+        Func.write("Unauthorized")
+        Func.close()
     return render_template(f'{club}-edit.html', club=club)
 
 @app.route('/login/<club_id>')
@@ -756,7 +767,7 @@ def login_page(club_id):
          var password = $("#password").val();
          var params = {
           username: username,
-          password: password,
+          password: password
         };
         var queryString = $.param(params);
         targetURL = `/edit/${clubId}`
