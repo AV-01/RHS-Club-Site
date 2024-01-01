@@ -3,13 +3,12 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <meta http-equiv="refresh" content="30">
     <meta name="viewport" content="width=device-width">
     <title>RHS Clubs</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
-    <link href="static/css/style.css" rel="stylesheet" type="text/css" />
+    <link href="/static/css/style.css" rel="stylesheet" type="text/css" />
 </head>
 
 <body>
@@ -60,12 +59,13 @@ Nature
  style="max-width:140px;max-height:140px">
                 <div class="ms-5">
                     <input class="form-control form-control-lg fw-bold" type="text" placeholder="Zoology Club" id="club-name">
+                    <input class="form-control form-control-md" type="text" placeholder="I mean, it's alright <i>I guess</i>." id="club-slogan" data-toggle="tooltip" data-placement="bottom" title="Club slogan">
                 </div>
             </div>
             <div class="container-fluid text-secondary">
                 <div class="d-flex justify-content-between align-items-center">
 <p class="fw-bold mt-2">Use HTML text formatting!</p>
-<a class="btn btn-primary btn-sm rounded-pill" href="/view/Zoology-Club" onclick="update_all()">
+<a class="btn btn-primary btn-sm rounded-pill" onclick="update_all()">
     Save All <i class="bi bi-save"></i>
 </a>
                 </div>
@@ -101,7 +101,7 @@ Nature
 Meeting Dates
                 </div>
                 <div class="card-body">
-<input class="card-title fw-bold" placeholder="Whenever I feel like it" id="meeting-dates">
+<input class="fw-bold" placeholder="Whenever I feel like it" id="meeting-dates">
                 </div>
             </div>
             <div class="card ms-5 mt-5 shadow">
@@ -118,8 +118,8 @@ Meeting Dates
     
 <li class="list-group-item">
                         <a onclick="add_social()" href="#"><i class="bi bi-check-square"></i></a>
-                        <input class="ms-2 text-primary" placeholder="Contact info" id="contact-info">
-                        <input class="ms-4 text-primary" placeholder="Icon name" id="icon-name">
+                        <input class="form-control form-control-md ms-2 text-primary" placeholder="Contact info" id="contact-info">
+                        <input class="form-control form-control-md ms-4 text-primary" placeholder="Icon name" id="icon-name">
                     </li>
                 </ul>
             </div>
@@ -160,8 +160,8 @@ Meeting Dates
                     </div>
                     <div>
                         <div class="card-body">
-                            <input class="text-secondary" placeholder="Role" id="leader-role">
-                            <input class="" placeholder="Name" id="leader-name">
+                            <input class="form-control form-control-md text-secondary" placeholder="Role" id="leader-role">
+                            <input class="form-control form-control-md" placeholder="Name" id="leader-name">
                         </div>
                     </div>
                 </div>
@@ -187,7 +187,6 @@ Meeting Dates
 </div>
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"
         integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
-<script src="explore-script.js"></script>
 <script>
 var clubId = "Zoology-Club";
     function add_leadership() {
@@ -250,19 +249,28 @@ function add_social() {
     function update_all() {
     var description = $('#description').val();
     var name = $('#club-name').val();
-    var new_meeting = $('meeting-dates').val();
+    var new_meeting = $('#meeting-dates').val();
+    var club_slogan  = $('#club-slogan').val();
+    console.log(name)
+    var regex = /[!@#$%^&*()_+\-=\[\]{};':"\|,.<>\/?]+/g    
+    var new_club_id = name.replace(regex, '').replace(/[_\s]/g, '-');
         $.ajax({
             url: '/update_all',
             type: 'GET',
-            data: {description: description, club_name: name, meeting: new_meeting, club_id: clubId},
+            data: {description:description,club_name:name,meeting: new_meeting,club_id: clubId,club_slogan:club_slogan},
             success: function(response) {
+            if(name === ""){
+                window.location.replace("/view/"+clubId);
+            }
+            else{
+                window.location.replace("/view/"+new_club_id);
+            }
             },
             error: function(error) {
                 console.log(error);
             }
         });
     }
-</scri
 </script>
 </body>
 

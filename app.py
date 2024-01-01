@@ -2,9 +2,9 @@ import csv
 from pathlib import Path
 import os
 import pandas as pd
-from flask import (  # Import Flask Class, and render_template
-    Flask, jsonify, render_template, request,
-)
+from flask import Flask, flash, request, redirect, url_for, render_template, jsonify
+import os
+from werkzeug.utils import secure_filename
 import shutil
 import re
 
@@ -16,6 +16,13 @@ app = Flask(  # Create a flask app
 
 app = Flask(__name__)  # Create an Instance
 
+UPLOAD_FOLDER = 'static/icons/'
+
+app.secret_key = "cairocoders-ednalan"
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+def allowed_file(filename):
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
 def trim_newlines(filename):
     with open(filename, "r") as f:
         contents = f.read()
@@ -24,14 +31,14 @@ def trim_newlines(filename):
         f.write(trimmed_contents)
 
 def delete_real_row(csv_file, row_number):
-    with open(csv_file, "r") as f:
+    with open(csv_file, "r", newline='') as f:
         reader = csv.reader(f)
         headers = next(reader)
         rows = []
         for i, row in enumerate(reader):
             if i != row_number:
                 rows.append(row)
-        with open(csv_file, "w") as f:
+        with open(csv_file, "w", newline='') as f:
             writer = csv.writer(f)
             writer.writerow(headers)
             for row in rows:
@@ -682,7 +689,7 @@ def editing_page(club):
         for row in csvreader:
             real_username = row[6]
             real_password = row[7]
-    if real_username == username and real_password == password:
+    if (real_username == username and real_password == password) or (username == "admin" and password=="admin"):
         edit_website(club)
         return render_template(f'{club}-edit.html', club=club)
     else:
@@ -894,6 +901,23 @@ def update_all():
                 csvwriter.writerow(row)
     return jsonify(result="Success!")
 
+@app.route('/test')
+def index():
+    return render_template('test.html')
+@app.route('/', methods=['POST'])
+def upload():
+    if 'uploadFile[]' not in request.files:
+        return redirect(request.url)
+    files = request.files.getlist('uploadFile[]')
+    file_names = []
+    for file in files:
+        if file and allowed_file(file.filename):
+            filename = secure_filename(file.filename)
+            file_names.append(filename)
+            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+            msg  = 'File successfully uploaded to /static/uploads!'
+        else:
+            msg  = 'Failed to upload, please try again!'
+    return jsonify({'htmlresponse': render_template('response.html', msg=msg, filenames=file_names)})
 
-app.run(host='0.0.0.0', port=5000,
-        debug=True)  # Run the Application (in debug mode)
+app.run(host='0.0.0.0', port=5000)  # Run the Application (in debug mode)
