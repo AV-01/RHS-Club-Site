@@ -3,16 +3,13 @@ from pathlib import Path
 import os
 import pandas as pd
 from flask import Flask, flash, request, redirect, url_for, render_template, jsonify
-import os
+import urllib.request
 from werkzeug.utils import secure_filename
 import shutil
 import re
 
 app = Flask(  # Create a flask app
-    __name__,
-    template_folder='templates',  # Name of html file folder
-    static_folder='static'  # Name of directory for static files
-)
+    __name__)
 
 app = Flask(__name__)  # Create an Instance
 
@@ -20,6 +17,8 @@ UPLOAD_FOLDER = 'static/icons/'
 
 app.secret_key = "cairocoders-ednalan"
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+
+ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg'])
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
@@ -661,6 +660,22 @@ function add_social() {
 def main():  # Run the function
     return render_template('home.html')  # Render the template
 
+@app.route('/', methods=['POST'])
+def upload():
+    print("called upload func")
+    if 'uploadFile[]' not in request.files:
+        return redirect(request.url)
+    files = request.files.getlist('uploadFile[]')
+    file_names = []
+    for file in files:
+        if file and allowed_file(file.filename):
+            filename = secure_filename(file.filename)
+            file_names.append(filename)
+            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+            msg  = 'File successfully uploaded to /static/uploads!'
+        else:
+            msg  = 'Failed to upload, please try again!'
+    return jsonify({'htmlresponse': render_template('response.html', msg=msg, filenames=file_names)})
 
 @app.route('/home')  # Route the Function
 def home():  # Run the function
@@ -902,22 +917,9 @@ def update_all():
     return jsonify(result="Success!")
 
 @app.route('/test')
-def index():
+def test():
+    print('called test func')
     return render_template('test.html')
-@app.route('/', methods=['POST'])
-def upload():
-    if 'uploadFile[]' not in request.files:
-        return redirect(request.url)
-    files = request.files.getlist('uploadFile[]')
-    file_names = []
-    for file in files:
-        if file and allowed_file(file.filename):
-            filename = secure_filename(file.filename)
-            file_names.append(filename)
-            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-            msg  = 'File successfully uploaded to /static/uploads!'
-        else:
-            msg  = 'Failed to upload, please try again!'
-    return jsonify({'htmlresponse': render_template('response.html', msg=msg, filenames=file_names)})
+
 
 app.run(host='0.0.0.0', port=5000)  # Run the Application (in debug mode)
