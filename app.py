@@ -742,6 +742,27 @@ def upload(club_id):
             except:
                 pass
             os.rename(f'static/icons/{filename}', f'static/icons/{club_id}.{extension}')
+            with open(f"static/data/{club_id}/{club_id}.csv", 'r', newline='') as source, open(f"static/data/{club_id}/{club_id}-results.csv", 'w', newline='') as result:
+                csvreader = csv.reader(source)
+                csvwriter = csv.writer(result)
+                header = next(csvreader)
+                csvwriter.writerow(header)
+                for row in csvreader:
+                    row[2] = f'/static/icons/{club_id}.{extension}'
+                    csvwriter.writerow(row)
+            os.remove(f"static/data/{club_id}/{club_id}.csv")
+            os.rename(f"static/data/{club_id}/{club_id}-results.csv",f"static/data/{club_id}/{club_id}.csv")
+            with open(f"static/data/club-data.csv", 'r', newline='') as source, open(f"static/data/club-data-results.csv", 'w', newline='') as result:
+                csvreader = csv.reader(source)
+                csvwriter = csv.writer(result)
+                header = next(csvreader)
+                csvwriter.writerow(header)
+                for row in csvreader:
+                    if row[5] == club_id:
+                        row[1] = f'/static/icons/{club_id}.{extension}'
+                    csvwriter.writerow(row)
+            os.remove(f"static/data/club-data.csv")
+            os.rename(f"static/data/club-data-results.csv",f"static/data/club-data.csv")
             file_names.append(f"{club_id}.{extension}")
             msg = 'File successfully uploaded!'
         else:
