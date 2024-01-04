@@ -196,6 +196,7 @@ test desc change.
                 $('#targetLayer').hide();
                 $(this).ajaxSubmit({
                     target: '#targetLayer',
+                    data: { 'club_id': clubId },
                     beforeSubmit:function(){
                         $('.progress-bar').width('50%');
                     },

@@ -582,41 +582,55 @@ Meeting Dates
     </footer>
 </div>
 <script>
-$(document).ready(function(){
-        $('#uploadImage').submit(function(event){
-            if($('#uploadFile').val()){
-                event.preventDefault();
-                $('#loader-icon').show();
-                $('#targetLayer').hide();
-                $(this).ajaxSubmit({
-                    target: '#targetLayer',
-                    beforeSubmit:function(){
-                        $('.progress-bar').width('50%');
-                    },
-                    uploadProgress: function(event, position, total, percentageComplete)
-                    {
-                        $('.progress-bar').animate({
-                            width: percentageComplete + '%'
-                        }, {
-                            duration: 1000
-                        });
-                    },
-                    success:function(data){
-                        $('#loader-icon').hide();
-                        $('#targetLayer').show();
-                        $('#targetLayer').append(data.htmlresponse);
-                    },
-                    resetForm: true
-                });
-            }
-            return false;
-        });
-    });
 """
     Func.write(ending_code)
     ending_code1 = f"var clubId = \"{club_id}\";"
     Func.write(ending_code1)
     ending_code2 = """
+    $(document).ready(function(){
+    $('#uploadImage').submit(function(event){
+        if ($('#uploadFile').val()){
+            event.preventDefault();
+
+            var formData = new FormData(this);
+            formData.append('club_id', clubId);
+
+            $('#loader-icon').show();
+            $('#targetLayer').hide();
+
+            $.ajax({
+                url: '/upload/'+clubId,  // Replace with the actual URL for your upload endpoint
+                type: 'POST',
+                data: formData,
+                processData: false,
+                contentType: false,
+                beforeSend: function(){
+                    $('.progress-bar').width('50%');
+                },
+                xhr: function(){
+                    var xhr = $.ajaxSettings.xhr();
+                    xhr.upload.onprogress = function(event) {
+                        if (event.lengthComputable) {
+                            var percentageComplete = (event.loaded / event.total) * 100;
+                            $('.progress-bar').animate({
+                                width: percentageComplete + '%'
+                            }, {
+                                duration: 1000
+                            });
+                        }
+                    };
+                    return xhr;
+                },
+                success: function(data){
+                    $('#loader-icon').hide();
+                    $('#targetLayer').show();
+                    $('#targetLayer').append(data.htmlresponse);
+                }
+            });
+        }
+        return false;
+    });
+});
     function add_leadership() {
         var leaderRole = $('#leader-role').val();
         var leaderName = $('#leader-name').val();
@@ -711,21 +725,27 @@ function add_social() {
 def main():  # Run the function
     return render_template('home.html')  # Render the template
 
-@app.route('/', methods=['POST'])
-def upload():
-    print("called upload func")
+@app.route('/upload/<club_id>', methods=['POST'])
+def upload(club_id):
     if 'uploadFile[]' not in request.files:
         return redirect(request.url)
     files = request.files.getlist('uploadFile[]')
     file_names = []
     for file in files:
         if file and allowed_file(file.filename):
+            # Use club_id as the filename
             filename = secure_filename(file.filename)
-            file_names.append(filename)
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-            msg  = 'File successfully uploaded!'
+            extension = filename.split(".")[-1]
+            try:
+                os.remove(f'static/icons/{club_id}.{extension}')
+            except:
+                pass
+            os.rename(f'static/icons/{filename}', f'static/icons/{club_id}.{extension}')
+            file_names.append(f"{club_id}.{extension}")
+            msg = 'File successfully uploaded!'
         else:
-            msg  = 'Failed to upload, please try again!'
+            msg = 'Failed to upload, please try again!'
     return jsonify({'htmlresponse': render_template('response.html', msg=msg, filenames=file_names)})
 
 @app.route('/home')  # Route the Function

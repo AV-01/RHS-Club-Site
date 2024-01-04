@@ -193,37 +193,46 @@ Meeting Dates
     </footer>
 </div>
 <script>
-$(document).ready(function(){
-        $('#uploadImage').submit(function(event){
-            if($('#uploadFile').val()){
-                event.preventDefault();
-                $('#loader-icon').show();
-                $('#targetLayer').hide();
-                $(this).ajaxSubmit({
-                    target: '#targetLayer',
-                    beforeSubmit:function(){
-                        $('.progress-bar').width('50%');
-                    },
-                    uploadProgress: function(event, position, total, percentageComplete)
-                    {
-                        $('.progress-bar').animate({
-                            width: percentageComplete + '%'
-                        }, {
-                            duration: 1000
-                        });
-                    },
-                    success:function(data){
-                        $('#loader-icon').hide();
-                        $('#targetLayer').show();
-                        $('#targetLayer').append(data.htmlresponse);
-                    },
-                    resetForm: true
-                });
-            }
-            return false;
-        });
-    });
 var clubId = "Bird-Club";
+    $(document).ready(function(){
+    $('#uploadImage').submit(function(event){
+        if ($('#uploadFile').val()){
+            event.preventDefault();
+            $('#loader-icon').show();
+            $('#targetLayer').hide();
+
+            $.ajax({
+                url: '/'+clubId,  // Replace with the actual URL for your upload endpoint
+                type: 'POST',
+                processData: false,
+                contentType: false,
+                beforeSend: function(){
+                    $('.progress-bar').width('50%');
+                },
+                xhr: function(){
+                    var xhr = $.ajaxSettings.xhr();
+                    xhr.upload.onprogress = function(event) {
+                        if (event.lengthComputable) {
+                            var percentageComplete = (event.loaded / event.total) * 100;
+                            $('.progress-bar').animate({
+                                width: percentageComplete + '%'
+                            }, {
+                                duration: 1000
+                            });
+                        }
+                    };
+                    return xhr;
+                },
+                success: function(data){
+                    $('#loader-icon').hide();
+                    $('#targetLayer').show();
+                    $('#targetLayer').append(data.htmlresponse);
+                }
+            });
+        }
+        return false;
+    });
+});
     function add_leadership() {
         var leaderRole = $('#leader-role').val();
         var leaderName = $('#leader-name').val();
