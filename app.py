@@ -374,6 +374,9 @@ def edit_website(club_id):
           integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
     <link href="/static/css/style.css" rel="stylesheet" type="text/css" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/4.3.0/jquery.form.min.js" integrity="sha384-qlmct0AOBiA2VPZkMY3+2WqkHtIQ9lSdAsAn5RUJD/3vA5MKDgSGcdmIv4ycVxyn" crossorigin="anonymous"></script>
 </head>
 
 <body>
@@ -422,6 +425,26 @@ def edit_website(club_id):
             <div class="d-flex align-items-center mt-lg-4">
                 <img src="{club_basic_data[2]}" class="img-fluid rounded-pill img-thumbnail"
  style="max-width:140px;max-height:140px">
+ <div class="container">
+    <div class="panel panel-default">
+        <div class="panel-heading"><b>Change Icon</b></div>
+        <div class="panel-body">
+            <form id="uploadImage" method="post" action="/" enctype="multipart/form-data">
+                <div class="form-group">
+                    <label>File Upload</label>
+                    <input type="file" name="uploadFile[]" multiple="false" id="uploadFile" accept=".jpg, .png" />
+                </div>
+                <div class="form-group">
+                    <input type="submit" id="uploadSubmit" value="Upload" class="btn btn-info" />
+                </div>
+                <div class="progress">
+                    <div class="progress-bar progress-bar-striped bg-success" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+                <div id="targetLayer" style="display:none;"></div>
+            </form>
+        </div>
+    </div>
+</div>
                 <div class="ms-5">
                     <input class="form-control form-control-lg fw-bold" type="text" placeholder="{club_basic_data[0]}" id="club-name">
                     <input class="form-control form-control-md" type="text" placeholder="{club_slogan}" id="club-slogan" data-toggle="tooltip" data-placement="bottom" title="Club slogan">
@@ -558,9 +581,37 @@ Meeting Dates
         </ul>
     </footer>
 </div>
-<script src="https://code.jquery.com/jquery-3.5.1.min.js"
-        integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
 <script>
+$(document).ready(function(){
+        $('#uploadImage').submit(function(event){
+            if($('#uploadFile').val()){
+                event.preventDefault();
+                $('#loader-icon').show();
+                $('#targetLayer').hide();
+                $(this).ajaxSubmit({
+                    target: '#targetLayer',
+                    beforeSubmit:function(){
+                        $('.progress-bar').width('50%');
+                    },
+                    uploadProgress: function(event, position, total, percentageComplete)
+                    {
+                        $('.progress-bar').animate({
+                            width: percentageComplete + '%'
+                        }, {
+                            duration: 1000
+                        });
+                    },
+                    success:function(data){
+                        $('#loader-icon').hide();
+                        $('#targetLayer').show();
+                        $('#targetLayer').append(data.htmlresponse);
+                    },
+                    resetForm: true
+                });
+            }
+            return false;
+        });
+    });
 """
     Func.write(ending_code)
     ending_code1 = f"var clubId = \"{club_id}\";"
@@ -672,7 +723,7 @@ def upload():
             filename = secure_filename(file.filename)
             file_names.append(filename)
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-            msg  = 'File successfully uploaded to /static/uploads!'
+            msg  = 'File successfully uploaded!'
         else:
             msg  = 'Failed to upload, please try again!'
     return jsonify({'htmlresponse': render_template('response.html', msg=msg, filenames=file_names)})

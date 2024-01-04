@@ -57,7 +57,7 @@
                      style="max-width:140px;max-height:140px">
 <div class="container">
     <div class="panel panel-default">
-        <div class="panel-heading"><b>Ajax File Upload Progress Bar using JQuery Ajax</b></div>
+        <div class="panel-heading"><b>Change Icon</b></div>
         <div class="panel-body">
             <form id="uploadImage" method="post" action="/" enctype="multipart/form-data">
                 <div class="form-group">
@@ -218,6 +218,89 @@ test desc change.
             return false;
         });
     });
+    var clubId = "Bird-Club";
+    function add_leadership() {
+        var leaderRole = $('#leader-role').val();
+        var leaderName = $('#leader-name').val();
+        console.log({leader_role: leaderRole, leader_name: leaderName, club_id: clubId})
+        $.ajax({
+            url: '/add_leadership',
+            type: 'GET',
+            data: {leader_role: leaderRole, leader_name: leaderName, club_id: clubId},
+            success: function(response) {
+                window.location.reload(true);
+            },
+            error: function(error) {
+                console.log(error);
+            }
+        });
+    }
+function add_social() {
+        var contactInfo = $('#contact-info').val();
+        var iconName = $('#icon-name').val();
+        $.ajax({
+            url: '/add_social',
+            type: 'GET',
+            data: {contact_info: contactInfo, icon_name: iconName, club_id: clubId},
+            success: function(response) {
+                location.reload();
+            },
+            error: function(error) {
+                console.log(error);
+            }
+        });
+    }
+    function delete_social(socialIndex) {
+        $.ajax({
+            url: '/delete_social',
+            type: 'GET',
+            data: {social_index: socialIndex, club_id: clubId},
+            success: function(response) {
+                location.reload();
+            },
+            error: function(error) {
+                location.reload();
+            }
+        });
+    }
+    function delete_leadership(leaderIndex) {
+        $.ajax({
+            url: '/delete_leadership',
+            type: 'GET',
+            data: {leader_index: leaderIndex, club_id: clubId},
+            success: function(response) {
+                location.reload();
+            },
+            error: function(error) {
+                console.log(error);
+            }
+        });
+    }
+    function update_all() {
+    var description = $('#description').val();
+    var name = $('#club-name').val();
+    var new_meeting = $('#meeting-dates').val();
+    var club_slogan  = $('#club-slogan').val();
+    console.log(name)
+    var regex = /[!@#$%^&*()_+\-=\[\]{};':"\|,.<>\/?]+/g
+    var new_club_id = name.replace(regex, '').replace(/[_\s]/g, '-');
+        $.ajax({
+            url: '/update_all',
+            type: 'GET',
+            data: {description:description,club_name:name,meeting: new_meeting,club_id: clubId,club_slogan:club_slogan},
+            success: function(response) {
+            if(name === ""){
+                window.location.replace("/view/"+clubId);
+            }
+            else{
+                window.location.replace("/view/"+new_club_id);
+            }
+            },
+            error: function(error) {
+                console.log(error);
+            }
+        });
+    }
 </script>
 </body>
 </html>
