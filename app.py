@@ -7,6 +7,7 @@ import urllib.request
 from werkzeug.utils import secure_filename
 import shutil
 import re
+from datetime import datetime,timezone
 
 app = Flask(  # Create a flask app
     __name__)
@@ -759,11 +760,36 @@ def login_page(club_id):
     Func.close()
     return render_template(f'{club_id}-login.html',club_id=club_id)
 
+
+def update_time(club_id):
+    with open(f"static/data/{club_id}/{club_id}.csv", 'r', newline='') as source, open(f"static/data/{club_id}/{club_id}-results.csv", 'w', newline='') as result:
+        csvreader = csv.reader(source)
+        csvwriter = csv.writer(result)
+        header = next(csvreader)
+        csvwriter.writerow(header)
+        for row in csvreader:
+            row[3] = str(datetime.now(timezone.utc)).replace(" ","T").split(".")[0]
+            csvwriter.writerow(row)
+    os.remove(f"static/data/{club_id}/{club_id}.csv")
+    os.rename(f"static/data/{club_id}/{club_id}-results.csv", f"static/data/{club_id}/{club_id}.csv")
+    with open(f"static/data/club-data.csv", 'r', newline='') as source, open(f"static/data/club-data-results.csv", 'w', newline='') as result:
+        csvreader = csv.reader(source)
+        csvwriter = csv.writer(result)
+        header = next(csvreader)
+        csvwriter.writerow(header)
+        for row in csvreader:
+            if row[5] == club_id:
+                row[4] = str(datetime.now(timezone.utc)).replace(" ","T").split(".")[0]
+            csvwriter.writerow(row)
+    os.remove(f"static/data/club-data.csv")
+    os.rename(f"static/data/club-data-results.csv", f"static/data/club-data.csv")
+
 @app.route('/add_leadership')
 def add_leadership():
     leader_role = request.args.get('leader_role')
     leader_name = request.args.get('leader_name')
     club_id = request.args.get('club_id')
+    update_time(club_id)
     with open(f"static/data/{club_id}/{club_id}-leadership.csv",
               'a',
               newline='',
@@ -781,6 +807,7 @@ def add_social():
     contact_info = request.args.get('contact_info')
     icon_name = request.args.get('icon_name')
     club_id = request.args.get('club_id')
+    update_time(club_id)
     with open(f"static/data/{club_id}/{club_id}-socials.csv",
               'a',
               newline='',
@@ -794,6 +821,7 @@ def add_social():
 def delete_social():
     row_number = request.args.get('social_index')
     club_id = request.args.get('club_id')
+    update_time(club_id)
     csv_file = f"static/data/{club_id}/{club_id}-socials.csv"
     delete_real_row(csv_file, int(row_number))
 
@@ -802,6 +830,7 @@ def delete_social():
 def delete_leadership():
     leader_index = request.args.get('leader_index')
     club_id = request.args.get('club_id')
+    update_time(club_id)
     delete_real_row(f"static/data/{club_id}/{club_id}-leadership.csv",
                     int(leader_index))
     return jsonify(result="Success!")
@@ -814,6 +843,7 @@ def update_all():
     meeting = request.args.get('meeting')
     club_id = request.args.get('club_id')
     club_slogan = request.args.get('club_slogan')
+    update_time(club_id)
     with open(f"static/data/{club_id}/{club_id}-desc.txt", "w") as text_file:
         text_file.write(description)
     trim_newlines(f"static/data/{club_id}/{club_id}-desc.txt")
