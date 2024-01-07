@@ -1,24 +1,35 @@
 import csv
 import os
 import requests
+from pathlib import Path
 
-with open(f"static/data/club-data.csv", 'r', newline='') as source2:
-    csvreader = csv.reader(source2)
-    header = next(csvreader)
-    for row in csvreader:
-        club_id = row[5]
-        with open(f"static/data/{club_id}/{club_id}.csv", 'r', newline='') as source, open(f"static/data/{club_id}/{club_id}-results.csv", 'w', newline='') as result:
-            csvreader = csv.reader(source)
-            csvwriter = csv.writer(result)
-            header = next(csvreader)
-            header.append("username")
-            header.append("password")
-            csvwriter.writerow(header)
-            for row in csvreader:
-                row.append(club_id)
-                r = requests.get(url = "https://passwordinator.onrender.com/?num=true&char=true&caps=true&len=10")
-                data = r.json()
-                row.append(data['data'])
-                csvwriter.writerow(row)
-        os.remove(f"static/data/{club_id}/{club_id}.csv")
-        os.rename(f"static/data/{club_id}/{club_id}-results.csv",f"static/data/{club_id}/{club_id}.csv")
+def test():
+    club_id = "Bird-Club"
+    real_path = f"static/data/{club_id}"
+    all_data = []
+    with open(f"{real_path}/{club_id}.csv", 'r') as file:
+        csvreader = csv.reader(file, delimiter=',')
+        for row in csvreader:
+            all_data.append(row)
+    club_basic_data = all_data[1]
+    print(club_basic_data)
+    category = club_basic_data[1]
+    club_name = club_basic_data[0]
+    meeting_date = club_basic_data[5]
+    desc = Path(f'{real_path}/{club_id}-desc.txt').read_text()
+    all_data = []
+    with open(f'{real_path}/{club_id}-socials.csv') as csv_file:
+        csvreader = csv.reader(csv_file, delimiter=',')
+        for row in csvreader:
+            all_data.append(row)
+    socials_list = all_data[1:]
+    all_data = []
+    with open(f'{real_path}/{club_id}-leadership.csv') as csv_file:
+        csvreader = csv.reader(csv_file, delimiter=',')
+        for row in csvreader:
+            all_data.append(row)
+    leaders_list = all_data[1:]
+    print(leaders_list)
+
+
+test()
