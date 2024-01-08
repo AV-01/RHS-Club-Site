@@ -609,6 +609,7 @@ def view_page(club_id):
     club_name = club_basic_data[0]
     meeting_date = club_basic_data[5]
     filename = club_basic_data[2]
+    time_update = club_basic_data[3]
     desc = Path(f'{real_path}/{club_id}-desc.txt').read_text()
     all_data = []
     with open(f'{real_path}/{club_id}-socials.csv') as csv_file:
@@ -622,7 +623,7 @@ def view_page(club_id):
         for row in csvreader:
             all_data.append(row)
     leaders_list = all_data[1:]
-    return render_template('club-view.html', category=category, club_name=club_name,meeting_date=meeting_date,filename=filename,desc=desc,socials_list=socials_list,leaders_list=leaders_list)
+    return render_template('club-view.html', time_update = time_update, category=category, club_name=club_name,meeting_date=meeting_date,filename=filename,desc=desc,socials_list=socials_list,leaders_list=leaders_list)
 
 @app.route('/edit/<club_id>')  # /landingpage/A
 def editing_page(club_id):
