@@ -534,8 +534,6 @@ function add_social() {
 </html>
     """
     Func.write(ending_code2)
-
-
 @app.route('/')  # Route the Function
 def main():  # Run the function
     return render_template('home.html')  # Render the template
