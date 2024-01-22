@@ -64,8 +64,10 @@
                         <div class="panel-body">
                             <form id="uploadImage" method="post" action="/" enctype="multipart/form-data">
                                 <div class="form-group">
-                                    <label>File Upload</label>
-                                    <input type="file" name="uploadFile[]" multiple="false" id="uploadFile" accept=".jpg, .png" />
+                                    <label for="uploadFile">File Upload</label>
+                                    <div class="input-group">
+                                        <input type="file" name="uploadFile[]" multiple="false" id="uploadFile" accept=".jpg, .png" class="form-control">
+                                    </div>
                                 </div>
                                 <div class="form-group">
                                     <input type="submit" id="uploadSubmit" value="Upload" class="btn btn-info" />
