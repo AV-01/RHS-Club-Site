@@ -4,6 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width">
     <title>RHS Clubs</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
@@ -56,30 +57,49 @@
                 </ol>
             </nav>
             <div class="d-flex align-items-center mt-lg-4">
-                <img src="{{ filename }}" class="img-fluid rounded-pill img-thumbnail"
-                     style="max-width:140px;max-height:140px">
-                <div class="container">
-                    <div class="panel panel-default">
-                        <div class="panel-heading"><b>Change Icon</b></div>
-                        <div class="panel-body">
-                            <form id="uploadImage" method="post" action="/" enctype="multipart/form-data">
-                                <div class="form-group">
-                                    <label for="uploadFile">File Upload</label>
-                                    <div class="input-group">
-                                        <input type="file" name="uploadFile[]" multiple="false" id="uploadFile" accept=".jpg, .png" class="form-control">
+                <button type="button" href="#" class="btn btn-link p-0" data-toggle="modal" data-target="#exampleModal">
+                    <img src="{{ filename }}" alt="Button Image" class="img-fluid rounded-pill img-thumbnail" style="max-width:140px;max-height:140px">
+                </button>
+                <!-- Modal -->
+                <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">Change Club Icon</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="panel panel-default">
+                                    <div class="panel-body">
+                                        <form id="uploadImage" method="post" action="/" enctype="multipart/form-data">
+                                            <div class="form-group">
+                                                <label for="uploadFile">File Upload</label>
+                                                <div class="input-group">
+                                                    <input type="file" name="uploadFile[]" multiple="false" id="uploadFile" accept=".jpg, .png" class="form-control">
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <input type="submit" id="uploadSubmit" value="Upload" class="btn btn-info" />
+                                            </div>
+                                            <div class="progress">
+                                                <div class="progress-bar progress-bar-striped bg-success" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                                            </div>
+                                            <div id="targetLayer" style="display:none;"></div>
+                                        </form>
                                     </div>
                                 </div>
-                                <div class="form-group">
-                                    <input type="submit" id="uploadSubmit" value="Upload" class="btn btn-info" />
-                                </div>
-                                <div class="progress">
-                                    <div class="progress-bar progress-bar-striped bg-success" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
-                                </div>
-                                <div id="targetLayer" style="display:none;"></div>
-                            </form>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                <button type="button" class="btn btn-primary">Save changes</button>
+                            </div>
                         </div>
                     </div>
                 </div>
+
+
                 <div class="ms-5">
                     <input class="form-control form-control-lg fw-bold" type="text" placeholder="{{ club_name }}" id="club-name">
                     <input class="form-control form-control-md" type="text" placeholder="{{ club_slogan }}" id="club-slogan" data-toggle="tooltip" data-placement="bottom" title="Club slogan">
@@ -87,8 +107,8 @@
             </div>
             <div class="container-fluid text-secondary">
                 <div class="d-flex justify-content-between align-items-center">
-                    <p class="fw-bold mt-2">Use HTML text formatting!</p>
-                    <a class="btn btn-primary btn-sm rounded-pill" onclick="update_all()">
+                    <p class="fw-bold mt-2">Change your club photo by clicking the image—it's a button!</p>
+                    <a class="btn btn-primary btn-sm rounded-pill text-white" onclick="update_all()">
                         Save All <i class="bi bi-save"></i>
                     </a>
                 </div>
@@ -119,21 +139,19 @@
                     </li>
                     {% endfor %}
                     <li class="list-group-item">
-                        <a onclick="add_social()" href="#"><i class="bi bi-check-square"></i></a>
                         <input class="form-control form-control-md text-primary" placeholder="Contact info" id="contact-info">
-                        <div class="dropdown">
-                            <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                Icon
-                            </button>
-                            <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="#">Discord</a></li>
-                                <li><a class="dropdown-item" href="#">Instagram</a></li>
-                                <li><a class="dropdown-item" href="#">Facebook</a></li>
-                                <li><a class="dropdown-item" href="#">Google</a></li>
-                                <li><a class="dropdown-item" href="#">Youtube</a></li>
-                                <li><a class="dropdown-item" href="#">Default</a></li>
-                            </ul>
-                        </div>
+                        <select name="icons" id="icons" class="form-select">
+                            <option value="bi-globe">Default</option>
+                            <option value="bi-discord">Discord</option>
+                            <option value="bi-instagram">Instagram</option>
+                            <option value="bi-facebook">Facebook</option>
+                            <option value="bi-google">Google</option>
+                            <option value="bi-youtube">Youtube</option>
+                        </select>
+                        <a class="btn btn-primary text-light" onclick="add_social()">
+                            Save All <i class="bi bi-save"></i>
+
+                        </a>
                     </li>
                 </ul>
             </div>
@@ -190,6 +208,8 @@
         </ul>
     </footer>
 </div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 
 <script>
@@ -256,7 +276,7 @@
         }
     function add_social() {
             var contactInfo = $('#contact-info').val();
-            var iconName = $('#icon-name').val();
+            var iconName = document.getElementById("icons").value;
             $.ajax({
                 url: '/add_social',
                 type: 'GET',
