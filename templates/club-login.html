@@ -62,9 +62,36 @@
     function help(){
         alert("Please email aryavrat.mishra@rocklinusd.org for help!")
     }
+    window.addEventListener('DOMContentLoaded', function () {
+        var rememberedUsername = localStorage.getItem('rememberedUsername');
+        var rememberedPassword = localStorage.getItem('rememberedPassword');
+        if (rememberedUsername) {
+            document.getElementById('username').value = rememberedUsername;
+        }
+        if(rememberedPassword){
+            document.getElementById('password').value = rememberedPassword;
+        }
+        if(rememberedUsername && rememberedPassword){
+            $.ajax({
+                url: '/verify_credentials',
+                type: 'GET',
+                data: {club_id: clubId, username: rememberedUsername, password: rememberedPassword},
+                success: function(response) {
+                    if(response["valid"] === "True"){
+                        login();
+                    }
+                },
+                error: function(error) {
+                    console.log(error);
+                }
+            });
+        }
+    });
      function login() {
          var username = $("#username").val();
          var password = $("#password").val();
+         localStorage.setItem('rememberedUsername', username);
+         localStorage.setItem('rememberedPassword', password);
          var params = {
           username: username,
           password: password

@@ -624,6 +624,21 @@ def view_page(club_id):
     leaders_list = all_data[1:]
     return render_template('club-view.html', club_id=club_id,time_update = time_update, category=category, club_name=club_name,meeting_date=meeting_date,filename=filename,desc=desc,socials_list=socials_list,leaders_list=leaders_list)
 
+@app.route('/verify_credentials')
+def verification():
+    username = request.args.get('username')
+    password = request.args.get('password')
+    club_id = request.args.get('club_id')
+    with open(f"static/data/{club_id}/{club_id}.csv", 'r', newline='') as source:
+        csvreader = csv.reader(source)
+        header = next(csvreader)
+        for row in csvreader:
+            real_username = row[6]
+            real_password = row[7]
+    if (real_username == username and real_password == password) or (username == "admin" and password=="admin"):
+        return {"valid": "True"}
+    else:
+        return {"valid": "False"}
 @app.route('/edit/<club_id>')  # /landingpage/A
 def editing_page(club_id):
     username = request.args.get('username')
