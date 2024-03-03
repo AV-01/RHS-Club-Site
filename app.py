@@ -7,7 +7,7 @@ import urllib.request
 from werkzeug.utils import secure_filename
 import shutil
 import re
-from datetime import datetime,timezone
+from datetime import datetime, timezone
 
 app = Flask(  # Create a flask app
     __name__)
@@ -15,7 +15,6 @@ app = Flask(  # Create a flask app
 app = Flask(__name__)  # Create an Instance
 
 UPLOAD_FOLDER = 'static/icons/'
-
 app.secret_key = "cairocoders-ednalan"
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
