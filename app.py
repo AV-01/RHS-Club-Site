@@ -585,6 +585,9 @@ def upload(club_id):
 def home():  # Run the function
     return render_template('home.html')  # Render the template
 
+@app.route('/faq')  # Route the Function
+def faq():  # Run the function
+    return render_template('faq.html')
 
 @app.route('/explore')  # Route the Function
 def explore():  # Run the function
