@@ -77,7 +77,7 @@ def quick_create_explore():
             <a class="nav-link active" aria-current="page" href="explore">Explore</a>
           </li>
           <li class="nav-ite">
-            <a class="nav-link" href="#">Calendar</a>
+            <a class="nav-link" href="/faq">FAQ</a>
           </li>
         </ul>
         <form class="d-flex" role="search">
@@ -144,7 +144,7 @@ def quick_create_explore():
       <ul class="nav col-md-4 justify-content-end">
         <li class="nav-item"><a href="/" class="nav-link px-2 text-muted">Home</a></li>
         <li class="nav-item"><a href="/explore" class="nav-link px-2 text-muted">Explore</a></li>
-        <li class="nav-item"><a href="/calendar" class="nav-link px-2 text-muted">Calendar</a></li>
+        <li class="nav-item"><a href="/faq" class="nav-link px-2 text-muted">FAQ</a></li>
         <li class="nav-item">
           <p class="nav-link px-2 text-decoration-none opacity-75">Credit: Aryavrat Mishra and Manas Sana</p>
         </li>
@@ -211,7 +211,7 @@ def edit_website(club_id):
             <a class="nav-link active" aria-current="page" href="/explore">Explore</a>
           </li>
                 <li class="nav-ite">
-<a class="nav-link" href="#">Calendar</a>
+<a class="nav-link" href="/faq">FAQ</a>
                 </li>
             </ul>
             <form class="d-flex" role="search">
@@ -388,7 +388,7 @@ Meeting Dates
         <ul class="nav col-md-4 justify-content-end">
             <li class="nav-item"><a href="/" class="nav-link px-2 text-muted">Home</a></li>
             <li class="nav-item"><a href="/explore" class="nav-link px-2 text-muted">Explore</a></li>
-            <li class="nav-item"><a href="/calendar" class="nav-link px-2 text-muted">Calendar</a></li>
+            <li class="nav-item"><a href="/faq" class="nav-link px-2 text-muted">FAQ</a></li>
             <li class="nav-item">
                 <p class="nav-link px-2 text-decoration-none opacity-75">Credit: Aryavrat Mishra</p>
             </li>
