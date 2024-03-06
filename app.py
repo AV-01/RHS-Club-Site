@@ -865,5 +865,8 @@ def test():
     print(leaders_list)
     return render_template('club-view.html', category=category, club_name=club_name,meeting_date=meeting_date,filename=filename,desc=desc,socials_list=socials_list,leaders_list=leaders_list)
 
+@app.errorhandler(404)
+def page_not_found(e):
+    return render_template("404.html")
 
 app.run(host='0.0.0.0', port=5000,debug=True)
