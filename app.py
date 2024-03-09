@@ -624,7 +624,13 @@ def view_page(club_id):
         for row in csvreader:
             all_data.append(row)
     leaders_list = all_data[1:]
-    return render_template('club-view.html', club_id=club_id,time_update = time_update, category=category, club_name=club_name,meeting_date=meeting_date,filename=filename,desc=desc,socials_list=socials_list,leaders_list=leaders_list)
+    club_slogan = ""
+    with open(f"static/data/club-data.csv", 'r') as file:
+        csvreader = csv.reader(file, delimiter=',')
+        for row in csvreader:
+            if row[5] == club_basic_data[4]:
+                club_slogan = row[2]
+    return render_template('club-view.html', club_slogan=club_slogan, club_id=club_id,time_update = time_update, category=category, club_name=club_name,meeting_date=meeting_date,filename=filename,desc=desc,socials_list=socials_list,leaders_list=leaders_list)
 
 @app.route('/verify_credentials')
 def verification():
@@ -863,7 +869,13 @@ def test():
             all_data.append(row)
     leaders_list = all_data[1:]
     print(leaders_list)
-    return render_template('club-view.html', category=category, club_name=club_name,meeting_date=meeting_date,filename=filename,desc=desc,socials_list=socials_list,leaders_list=leaders_list)
+    club_slogan = ""
+    with open(f"static/data/club-data.csv", 'r') as file:
+        csvreader = csv.reader(file, delimiter=',')
+        for row in csvreader:
+            if row[5] == club_basic_data[4]:
+                club_slogan = row[2]
+    return render_template('club-view.html', club_slogan=club_slogan, category=category, club_name=club_name,meeting_date=meeting_date,filename=filename,desc=desc,socials_list=socials_list,leaders_list=leaders_list)
 
 @app.errorhandler(404)
 def page_not_found(e):

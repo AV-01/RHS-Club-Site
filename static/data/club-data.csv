@@ -1,8 +1,8 @@
 name,img,desc,category,time-update,id
 Bird Club,/static/icons/Bird-Club.jpg,"Birds, Nature Walks, and More!",Nature,2024-03-05T06:17:48,Bird-Club
-Zoology Club,/static/icons/Zoology-Club.jpg,"I mean, it's alright <i>I guess</i>.",Nature,2024-02-26T05:15:31,Zoology-Club
-Waste Management Association,/static/icons/Waste-Management-Association.jpg,Keeping the school clean!,Nature,2024-03-05T06:14:01,Waste-Management-Association
-VYBE,/static/icons/VYBE.jpg,It's actually cooler than expected.,Arts and Crafts,2024-03-05T06:12:40,VYBE
+Zoology Club,/static/icons/Zoology-Club.jpg,"I mean, it's alright <i>I guess</i>.",Nature,2024-03-09T06:06:07,Zoology-Club
+Waste Management Association,/static/icons/Waste-Management-Association.jpg,Keeping the school clean!,Nature,2024-03-08T06:11:21,Waste-Management-Association
+VYBE,/static/icons/VYBE.jpg,It's actually cooler than expected.,Arts and Crafts,2024-03-08T06:17:50,VYBE
 Multimedia Art Club,/static/icons/Multimedia-Art-Club.jpg,I have no idea what they do.,Arts and Crafts,2024-03-05T06:13:42,Multimedia-Art-Club
 Chess Club,/static/icons/Chess-Club.jpg,Best way to end a monday.,Games and Recreation,2024-03-05T06:14:15,Chess-Club
 Super Smash Bros Club,/static/icons/Super-Smash-Bros-Club.jpg,I'm really bad at this game.,Games and Recreation,2024-03-05T06:14:28,Super-Smash-Bros-Club
@@ -14,5 +14,5 @@ Computer Science Honors Society,/static/icons/Computer-Science-Honors-Society.jp
 Asian Youth Leadership Club(AYLA),/static/icons/Asian-Youth-Leadership-Club(AYLA).jpg,Makes me feel racist!!!!,Leadership,2024-03-05T06:16:28,Asian-Youth-Leadership-Club(AYLA)
 Key Club,/static/icons/Key-Club.jpg,Community Service!,Leadership,2024-03-05T06:17:14,Key-Club
 HOSA,/static/icons/HOSA.jpg,Pretty cool,Leadership,2024-03-05T06:17:29,HOSA
-Academic Decathlon,/static/icons/Academic-Decathlon.png,"Decathlon Minds, Academic Excellence.",Academics,2023-12-17T22:56:46,Academic-Decathlon
+Academic Decathlon,/static/icons/Academic-Decathlon.png,"Decathlon Minds, Academic Excellence.",Academics,2024-03-08T06:16:18,Academic-Decathlon
 Math Contest Squad,/static/icons/Math-Contest-Squad.jpg,Placeholder Slogan,Academics,2024-03-05T06:11:39,Math-Contest-Squad

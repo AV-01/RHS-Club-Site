@@ -1,5 +1,4 @@
 import pandas as pd
-import csv
 import os
 
 df = pd.read_csv('static/data/club-data.csv')
