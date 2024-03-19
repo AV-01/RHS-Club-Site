@@ -41,8 +41,8 @@
 <div class="container mt-3 mt-lg-4">
   <div class="row">
     <div class="col-12 col-lg-8">
-      <nav aria-label="breadcrumb">
-        <ol class="breadcrumb">
+      <nav aria-label="breadcrumb" class="d-flex justify-content-between align-items-center">
+        <ol class="breadcrumb m-0">
           <li class="breadcrumb-item"><a href="/" class="text-decoration-none">Home</a></li>
           <li class="breadcrumb-item">
             <a href="/explore" class="text-decoration-none">
@@ -51,7 +51,14 @@
           </li>
           <li class="breadcrumb-item active" aria-current="page">{{ club_name }}</li>
         </ol>
+        <a class="btn btn-primary btn-sm rounded-pill text-end ml-auto" href="/login/{{ club_id }}">
+          Edit <i class="bi bi-pen"></i>
+        </a>
       </nav>
+
+
+
+
       <div class="d-flex align-items-center mt-lg-4">
         <img src="{{ filename }}" class="img-fluid rounded-pill img-thumbnail"
              style="max-width:140px;max-height:140px">
@@ -63,9 +70,7 @@
       <div class="container-fluid text-secondary">
         <div class="d-flex justify-content-between align-items-center">
           <p class="fw-bold mt-2 card-time" data-set-time="{{ time_update }}"></p>
-          <a class="btn btn-primary btn-sm rounded-pill" href="/login/{{ club_id }}">
-            Edit <i class="bi bi-pen"></i>
-          </a>
+
         </div>
         {{ desc }}
       </div>
