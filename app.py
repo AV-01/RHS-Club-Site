@@ -821,6 +821,19 @@ def update_all():
                 row[0] = name
                 row[4] = new_club_id
                 csvwriter.writerow(row)
+        with open(f"static/data/club-data.csv", 'r', newline='') as source, open(f"static/data/club-data-results.csv", 'w', newline='') as result:
+            csvreader = csv.reader(source)
+            csvwriter = csv.writer(result)
+            header = next(csvreader)
+            csvwriter.writerow(header)
+            for row in csvreader:
+                if row[5] == club_id:
+                    row[0] = name
+                    row[5] = new_club_id
+                csvwriter.writerow(row)
+        os.remove("static/data/club-data.csv")
+        os.rename("static/data/club-data-results.csv", "static/data/club-data.csv")
+
         os.rename(f"static/data/{club_id}/{club_id}-leadership.csv",f"static/data/{new_club_id}/{new_club_id}-leadership.csv")
         os.rename(f"static/data/{club_id}/{club_id}-socials.csv", f"static/data/{new_club_id}/{new_club_id}-socials.csv")
         os.rename(f"static/data/{club_id}/{club_id}-desc.txt", f"static/data/{new_club_id}/{new_club_id}-desc.txt")
