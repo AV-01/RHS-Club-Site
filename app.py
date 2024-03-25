@@ -725,6 +725,7 @@ def add_leadership():
     leader_role = request.args.get('leader_role')
     leader_name = request.args.get('leader_name')
     club_id = request.args.get('club_id')
+    icon_color = request.args.get('icon_color')
     update_time(club_id)
     with open(f"static/data/{club_id}/{club_id}-leadership.csv",
               'a',

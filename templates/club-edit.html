@@ -114,8 +114,8 @@
 
                 </div>
                 <textarea class="form-control" style="min-width: 100%;min-height:100%;" rows=10 id="description">
-{{ desc }}
-</textarea>
+                    {{ desc }}
+                </textarea>
             </div>
         </div>
         <div class="col-6 col-md-4">
@@ -150,7 +150,7 @@
                             <option value="bi-youtube">Youtube</option>
                         </select>
                         <a class="btn btn-primary text-light" onclick="add_social()">
-                            Save All <i class="bi bi-save"></i>
+                            Save <i class="bi bi-save"></i>
 
                         </a>
                     </li>
@@ -183,12 +183,19 @@
             <div class="card shadow rounded-pill" style="border:0px">
                 <div class="d-flex align-items-center ps-2">
                     <div style="" class="text-center rounded-pill bg-info">
-                        <h3 style="margin-top:23%;marging-right:10px;min-width:100%" class="text-white"><a onclick="add_leadership()" href="#"><i class="bi bi-check-square"></i></a></h3>
+                        <h3 style="margin-top:16%;marging-right:10px;min-width:100%" class="text-white py-1"><a onclick="add_leadership()" href="#"><i class="bi bi-save px-3 py-5 mt-4"></i></a></h3>
                     </div>
                     <div>
                         <div class="card-body">
-                            <input class="form-control form-control-md text-secondary" placeholder="Role" id="leader-role">
-                            <input class="form-control form-control-md" placeholder="Name" id="leader-name">
+                            <input style="height:25px;" class="form-control form-control-md text-secondary" placeholder="Role" id="leader-role">
+                            <input style="height:25px;" class="form-control form-control-md" placeholder="Name" id="leader-name">
+                            <select style="height:35px;" name="colors" id="colors" class="form-select">
+                                <option value="bg-primary">Dark Blue</option>
+                                <option value="bg-danger">Red</option>
+                                <option value="bg-success">Green</option>
+                                <option value="bg-warning">Yellow</option>
+                                <option value="bg-info">Light Blue</option>
+                            </select>
                         </div>
                     </div>
                 </div>
@@ -262,11 +269,12 @@
         function add_leadership() {
             var leaderRole = $('#leader-role').val();
             var leaderName = $('#leader-name').val();
+            var iconColor = document.getElementById("colors").value;
             console.log({leader_role: leaderRole, leader_name: leaderName, club_id: clubId})
             $.ajax({
                 url: '/add_leadership',
                 type: 'GET',
-                data: {leader_role: leaderRole, leader_name: leaderName, club_id: clubId},
+                data: {leader_role: leaderRole, leader_name: leaderName, icon_color: iconColor, club_id: clubId},
                 success: function(response) {
                     window.location.reload(true);
                 },
