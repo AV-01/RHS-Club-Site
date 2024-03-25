@@ -1,4 +1,4 @@
-name,role,initials
-Radian Hong,Captain,RH
-Brook Moniz,Assistant Captain,BM
-Aryavrat Mishra,Resident Fool,AM
+name,role,initials,icon_color
+Radian Hong,Captain,RH,bg-info
+Brook Moniz,Assistant Captain,BM,bg-info
+Aryavrat Mishra,Resident Fool,AM,bg-info

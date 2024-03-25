@@ -1,3 +1,3 @@
-name,role,initials
-Bhavya,President,B
-Ms.Stark,Advisor,M
+name,role,initials,icon_color
+Bhavya,President,B,bg-info
+Ms.Stark,Advisor,M,bg-info

@@ -1,6 +1,6 @@
-name,role,initials
-Sofia,President,S
-Gargi,Vice President,G
-Brook,Secretary,B
-Aryavrat Mishra,Treasurer,AM
-Ms. Kenitzer,Advisor,MK
+name,role,initials,icon_color
+Sofia,President,S,bg-info
+Gargi,Vice President,G,bg-info
+Brook,Secretary,B,bg-info
+Aryavrat Mishra,Treasurer,AM,bg-info
+Ms. Kenitzer,Advisor,MK,bg-info
