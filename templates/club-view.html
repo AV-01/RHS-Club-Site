@@ -92,7 +92,7 @@
         <ul class="list-group list-group-flush">
           {% for item in socials_list %}
           <li class="list-group-item">
-            <i class="bi {{ item[0] }}"></i>
+            <i class="bi {{ item[0] }} icon-updating" style="color:{{ item[2] }}"></i>
             <span class="ms-2 text-primary">{{ item[1] }}</span>
           </li>
           {% endfor %}
@@ -137,6 +137,8 @@
   </footer>
 </div>
 <script src = "/static/scripts/view-script.js"></script>
+
+<script src="/static/scripts/club-view.js"></script>
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"
         integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
 </body>

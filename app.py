@@ -621,6 +621,21 @@ def view_page(club_id):
         for row in csvreader:
             all_data.append(row)
     socials_list = all_data[1:]
+    social_colors = {
+        'bi-google': '#dd4b39',
+        'bi-instagram': '#ac2bac',
+        'bi-youtube': '#ed302f',
+        'bi-facebook': '#3b5998',
+        'bi-discord': '#5865F2',
+        'bi-globe': '#007bff',
+        'bi-snapchat': '#FFFC00',
+        'bi-tiktok': '#69C9D0'
+    }
+    for social in socials_list:
+        platform = social[0]
+        color = social_colors.get(platform)
+        if color:
+            social.append(color)
     all_data = []
     with open(f'{real_path}/{club_id}-leadership.csv') as csv_file:
         csvreader = csv.reader(csv_file, delimiter=',')
