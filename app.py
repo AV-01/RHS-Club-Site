@@ -734,7 +734,7 @@ def add_leadership():
         csvwriter = csv.writer(csv_file)
         csvwriter.writerow([
             leader_name, leader_role,
-            ''.join([x[0].upper() for x in leader_name.split(' ')])
+            ''.join([x[0].upper() for x in leader_name.split(' ')]), icon_color
         ])
     return jsonify(result="Success!")
 
