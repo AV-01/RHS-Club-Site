@@ -8,6 +8,8 @@ from werkzeug.utils import secure_filename
 import shutil
 import re
 from datetime import datetime, timezone
+import bleach
+
 
 app = Flask(  # Create a flask app
     __name__)
@@ -612,6 +614,7 @@ def view_page(club_id):
     filename = club_basic_data[2]
     time_update = club_basic_data[3]
     desc = Path(f'{real_path}/{club_id}-desc.txt').read_text()
+    desc = bleach.clean(desc, tags=[], attributes={}, protocols=[], strip=True)
     all_data = []
     with open(f'{real_path}/{club_id}-socials.csv') as csv_file:
         csvreader = csv.reader(csv_file, delimiter=',')
